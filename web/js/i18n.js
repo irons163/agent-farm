@@ -101,6 +101,8 @@ const DICT = {
 };
 
 let lang = (() => {
+  const q = new URLSearchParams(location.search).get('lang');
+  if (q === 'zh' || q === 'en') return q;
   try {
     const s = localStorage.getItem('farm.lang');
     if (s) return s;

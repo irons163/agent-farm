@@ -43,18 +43,23 @@ const COLOR = /^#[0-9a-f]{3,8}$/i;
 // "Temporary" sessions: run from a temp folder (scripts, other agents probing CLIs) or a
 // finished one-shot (one prompt, no tools, over within minutes). They stay visible, but
 // are tagged, never take a farm slot from a real agent, and one-shots expire quickly.
+const WIN = process.platform === 'win32';
+const normDir = (p) => {
+  const s = String(p).replace(/\\/g, '/').replace(/\/*$/, '/');
+  return WIN ? s.toLowerCase() : s;
+};
 const TMP_DIRS = (() => {
-  const dirs = new Set(['/tmp/', '/private/tmp/', '/var/folders/', '/private/var/folders/']);
-  for (const d of [os.tmpdir(), process.env.TMPDIR, process.env.TEMP]) {
+  const dirs = new Set(['/tmp/', '/private/tmp/', '/var/folders/', '/private/var/folders/', '/var/tmp/']);
+  for (const d of [os.tmpdir(), process.env.TMPDIR, process.env.TEMP, process.env.TMP]) {
     if (!d) continue;
-    dirs.add(d.replace(/[\\/]*$/, '/'));
+    dirs.add(normDir(d));
     try {
-      dirs.add(fs.realpathSync(d).replace(/[\\/]*$/, '/'));
+      dirs.add(normDir(fs.realpathSync(d)));
     } catch { /* ignore */ }
   }
   return [...dirs];
 })();
-export const isTempPath = (p) => !!p && TMP_DIRS.some((d) => (p + '/').startsWith(d));
+export const isTempPath = (p) => !!p && TMP_DIRS.some((d) => normDir(p).startsWith(d));
 // platforms whose collectors can count prompts and tools reliably
 const COUNTED = new Set(['claude-code', 'codex', 'cursor', 'gemini-cli', 'opencode']);
 const ONE_SHOT_TTL = Number(process.env.FARM_ONESHOT_MIN || 30) * 60e3;
@@ -137,7 +142,7 @@ export class Farm {
       this.push.set(key, s);
     }
     s.platform = platform;
-    if (body.name) s.name = clip(body.name, 40);
+    s.name = clip(body.name || s.name || id, 40); // no name given: show the id, not the platform
     if (body.project) s.project = clip(body.project, 200);
     if (body.model) s.model = clip(body.model, 60);
     if (body.task || body.title) s.title = clip(body.task || body.title, 100);

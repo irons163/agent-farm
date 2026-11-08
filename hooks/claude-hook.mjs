@@ -3,7 +3,10 @@
 // "waiting for permission", tool use and turn ends the instant they happen.
 // Never blocks Claude: always exits 0 within ~1.5 s, even if the farm is down.
 // Configure in ~/.claude/settings.json (see README or the farm's help dialog).
-const url = (process.env.FARM_URL || 'http://127.0.0.1:5180') + '/api/hook/claude';
+// farm address: --url http://127.0.0.1:5181 (or FARM_URL); default port 5180
+const ui = process.argv.indexOf('--url');
+const url = ((ui > 0 && process.argv[ui + 1]) || process.env.FARM_URL || 'http://127.0.0.1:5180').replace(/\/$/, '') +
+  '/api/hook/claude';
 let raw = '';
 process.stdin.setEncoding('utf8');
 process.stdin.on('data', (c) => { raw += c; });

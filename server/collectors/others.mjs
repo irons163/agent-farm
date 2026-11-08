@@ -334,7 +334,8 @@ export class OpenCodeCollector {
       }
       for (const id of [...this.sessions.keys()]) if (!seen.has(id)) this.sessions.delete(id);
     } catch (e) {
-      this.error = String(e.message || e);
+      this.error = /node:sqlite|ERR_UNKNOWN_BUILTIN_MODULE/.test(String(e.message || e.code))
+        ? 'OpenCode support needs Node.js 22.13 or newer' : String(e.message || e);
     } finally {
       try {
         db?.close();

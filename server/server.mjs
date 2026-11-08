@@ -11,6 +11,30 @@ import fsp from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+const [MAJOR] = process.versions.node.split('.').map(Number);
+if (MAJOR < 20) {
+  console.error(`Agent Farm needs Node.js 20 or newer (you have ${process.version}). https://nodejs.org`);
+  process.exit(1);
+}
+
+// flags work the same on every OS (env vars like FARM_DEMO=on don't in Windows cmd)
+//   --demo  --port 5181  --host 0.0.0.0  --token <secret>
+const argv = process.argv.slice(2);
+const flag = (name) => {
+  const i = argv.findIndex((a) => a === `--${name}` || a.startsWith(`--${name}=`));
+  if (i < 0) return undefined;
+  const a = argv[i];
+  return a.includes('=') ? a.slice(a.indexOf('=') + 1) : (argv[i + 1] && !argv[i + 1].startsWith('--') ? argv[i + 1] : '');
+};
+if (argv.includes('--help') || argv.includes('-h')) {
+  console.log('Usage: npm start [-- --demo] [--port 5180] [--host 127.0.0.1] [--token <secret>]');
+  process.exit(0);
+}
+if (flag('demo') !== undefined) process.env.FARM_DEMO = 'on';
+if (flag('port')) process.env.PORT = flag('port');
+if (flag('host')) process.env.HOST = flag('host');
+if (flag('token')) process.env.FARM_TOKEN = flag('token');
+
 // node:sqlite (OpenCode collector) prints an experimental warning; keep the log clean
 const emit = process.emitWarning;
 process.emitWarning = (w, ...a) => {
@@ -31,7 +55,7 @@ const TICK = 1500;
 if (!LOOPBACK && !TOKEN) {
   // the state stream contains prompts and project paths: never serve it to a network unauthenticated
   console.error(`\n  ✖ HOST=${HOST} is reachable from other machines. Set FARM_TOKEN to a long random string, e.g.\n` +
-    `    FARM_TOKEN=$(openssl rand -hex 24) HOST=${HOST} npm start\n`);
+    `    npm start -- --host ${HOST} --token <long-random-string>\n`);
   process.exit(1);
 }
 
@@ -250,11 +274,23 @@ setInterval(() => {
   for (const c of clients) c.write(`event: ping\ndata: ${Date.now()}\n\n`);
 }, 15000);
 
+server.on('error', (e) => {
+  if (e.code === 'EADDRINUSE') {
+    console.error(`\n  ✖ Port ${PORT} is already in use (is the farm already running?). Try another one:\n    npm start -- --port ${PORT + 1}\n`);
+  } else console.error(`\n  ✖ ${e.message}\n`);
+  process.exit(1);
+});
+
 await pump();
 server.listen(PORT, HOST, () => {
-  const n = farm.snapshot.agents.length;
+  const snap = farm.snapshot;
+  const n = snap.agents.filter((a) => !a.demo).length;
+  const found = snap.collectors.filter((c) => c.found).map((c) => snap.platforms[c.platform]?.label || c.platform);
   console.log(`\n  🌾 Agent Farm  →  http://${HOST === '0.0.0.0' ? 'localhost' : HOST}:${PORT}`);
-  console.log(`     ${n} agent${n === 1 ? '' : 's'} found · collectors: ${farm.snapshot.collectors.filter((c) => c.found).map((c) => c.platform).join(', ') || 'none'}`);
+  console.log(found.length ? `     detected: ${found.join(', ')} · ${n} recent agent${n === 1 ? '' : 's'}`
+    : '     no AI platforms detected yet: start an agent, or post to /api/report');
+  if (snap.demo?.active) console.log(`     demo animals are on${snap.demo.mode === 'auto' ? ' until a real agent starts working' : ''}`);
+  console.log('     Ctrl+C to stop');
   if (!LOOPBACK) console.log(`     open http://<this-machine>:${PORT}/?token=<FARM_TOKEN> once on each device`);
   console.log('');
 });

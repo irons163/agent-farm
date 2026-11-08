@@ -27,7 +27,9 @@ let state = { agents: [], platforms: {}, collectors: [], demo: {}, config: {} };
 let selected = null;
 let filter = 'all';
 let chipFilter = null;
-let themePref = store.get('farm.theme', 'auto');
+// ?theme=day|night and ?lang=en|zh override the saved choice for this page (handy for sharing links)
+const QS = new URLSearchParams(location.search);
+let themePref = ['auto', 'day', 'night'].includes(QS.get('theme')) ? QS.get('theme') : store.get('farm.theme', 'auto');
 let firstState = true;
 const prev = new Map();
 const cardEls = new Map();
@@ -355,7 +357,8 @@ function renderHelp() {
       ${c.found ? `<span class="ok">✓ ${esc(t('sessions', { n: c.sessions }))}</span>` : `<span class="no">${esc(t('not_found'))}</span>`}</div>`;
   }).join('');
   const hook = state.config?.hookPath || '/path/to/agent-farm/hooks/claude-hook.mjs';
-  const hookCmd = { type: 'command', command: `node "${hook}"`, timeout: 5 };
+  const defaultFarm = /^http:\/\/(127\.0\.0\.1|localhost):5180$/.test(origin);
+  const hookCmd = { type: 'command', command: `node "${hook}"${defaultFarm ? '' : ` --url ${origin}`}`, timeout: 5 };
   const hooksJson = JSON.stringify({
     hooks: Object.fromEntries(['UserPromptSubmit', 'PreToolUse', 'PostToolUse', 'Notification', 'Stop', 'SessionStart', 'SessionEnd']
       .map((ev) => [ev, [/ToolUse/.test(ev) ? { matcher: '*', hooks: [hookCmd] } : { hooks: [hookCmd] }]])),

@@ -203,7 +203,8 @@ export function resolveSlug(slug) {
     return false;
   };
   try {
-    walk('/', 0);
+    if (process.platform === 'win32' && /^[a-z]$/i.test(parts[0] || '')) walk(`${parts[0].toUpperCase()}:\\`, 1);
+    else walk('/', 0);
   } catch {
     /* ignore */
   }

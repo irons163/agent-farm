@@ -2,6 +2,7 @@
 // Report an agent's status to Agent Farm from any script or language.
 //   node bin/farm-report.mjs --id my-bot --platform openai --status working --tool search --detail "order #1932"
 // Flags: --id (required) --name --platform --model --status --tool --detail --task --project --tokens --animal
+//        --url http://127.0.0.1:5180
 // Env:   FARM_URL (default http://127.0.0.1:5180), FARM_TOKEN
 const args = process.argv.slice(2);
 const body = {};
@@ -15,7 +16,8 @@ if (!body.id) {
   console.error('usage: farm-report --id <agent-id> [--status working|thinking|waiting|error|idle|sleeping|offline] [--platform openai] [--tool name] [--detail text]');
   process.exit(2);
 }
-const url = (process.env.FARM_URL || 'http://127.0.0.1:5180') + '/api/report';
+const url = (body.url || process.env.FARM_URL || 'http://127.0.0.1:5180').replace(/\/$/, '') + '/api/report';
+delete body.url;
 const headers = { 'content-type': 'application/json' };
 if (process.env.FARM_TOKEN) headers.authorization = `Bearer ${process.env.FARM_TOKEN}`;
 try {

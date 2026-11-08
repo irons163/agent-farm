@@ -206,7 +206,7 @@ export class Session {
     return {
       id: this.id,
       platform: this.platform,
-      name: this.name || this.project.split('/').filter(Boolean).pop() || this.platform,
+      name: this.name || this.project.split(/[\\/]/).filter(Boolean).pop() || this.platform,
       title: this.title,
       project: this.project,
       model: this.model,

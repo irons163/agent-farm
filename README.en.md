@@ -17,7 +17,7 @@ A **Blender-rendered** 2.5D isometric farm where every AI agent on your computer
 Needs [Node.js](https://nodejs.org) 20 or newer (22.13+ to see OpenCode).
 
 ```bash
-git clone https://github.com/YOUR-NAME/agent-farm.git
+git clone https://github.com/irons163/agent-farm.git
 cd agent-farm
 npm start
 ```

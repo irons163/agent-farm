@@ -17,7 +17,7 @@
 需要 [Node.js](https://nodejs.org) 20 以上（要看 OpenCode 的話需要 22.13 以上）。
 
 ```bash
-git clone https://github.com/YOUR-NAME/agent-farm.git
+git clone https://github.com/irons163/agent-farm.git
 cd agent-farm
 npm start
 ```

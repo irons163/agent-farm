@@ -1,0 +1,15 @@
+{
+  "name": "agent-farm",
+  "version": "1.0.0",
+  "description": "A Blender-rendered 2.5D farm where every AI agent (Claude Code, Codex, Cursor, Gemini, OpenCode, Ollama ...) is a farm animal showing its live status.",
+  "type": "module",
+  "private": true,
+  "license": "MIT",
+  "engines": { "node": ">=22.5" },
+  "scripts": {
+    "start": "node server/server.mjs",
+    "demo": "FARM_DEMO=on node server/server.mjs",
+    "render": "blender -b --factory-startup -P blender/render_all.py -- --quality final",
+    "render:preview": "blender -b --factory-startup -P blender/render_all.py -- --quality preview"
+  }
+}

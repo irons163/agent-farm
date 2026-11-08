@@ -1,0 +1,1308 @@
+{
+ "quality": "final",
+ "ss": 2,
+ "size": [
+  2560,
+  1600
+ ],
+ "ppu": 80.0,
+ "proj": [
+  [
+   56.568603515625,
+   56.568603515625,
+   0.0,
+   1280.0
+  ],
+  [
+   28.284263610839844,
+   -28.284311294555664,
+   -69.28200721740723,
+   820.0000286102295
+  ]
+ ],
+ "zones": {
+  "plots": [
+   {
+    "id": 0,
+    "bed": 3,
+    "center": [
+     4.1,
+     -7.9
+    ],
+    "station": [
+     5.319999999999999,
+     -9.120000000000001
+    ],
+    "crop": "sunflower"
+   },
+   {
+    "id": 1,
+    "bed": 2,
+    "center": [
+     1.2000000000000002,
+     -7.9
+    ],
+    "station": [
+     2.42,
+     -9.120000000000001
+    ],
+    "crop": "pumpkin"
+   },
+   {
+    "id": 2,
+    "bed": 7,
+    "center": [
+     4.1,
+     -5.0
+    ],
+    "station": [
+     5.319999999999999,
+     -6.22
+    ],
+    "crop": "cabbage"
+   },
+   {
+    "id": 3,
+    "bed": 1,
+    "center": [
+     -1.6999999999999997,
+     -7.9
+    ],
+    "station": [
+     -0.47999999999999976,
+     -9.120000000000001
+    ],
+    "crop": "cabbage"
+   },
+   {
+    "id": 4,
+    "bed": 6,
+    "center": [
+     1.2000000000000002,
+     -5.0
+    ],
+    "station": [
+     2.42,
+     -6.22
+    ],
+    "crop": "carrot"
+   },
+   {
+    "id": 5,
+    "bed": 11,
+    "center": [
+     4.1,
+     -2.1000000000000005
+    ],
+    "station": [
+     5.319999999999999,
+     -3.3200000000000003
+    ],
+    "crop": "corn"
+   },
+   {
+    "id": 6,
+    "bed": 0,
+    "center": [
+     -4.6,
+     -7.9
+    ],
+    "station": [
+     -3.38,
+     -9.120000000000001
+    ],
+    "crop": "carrot"
+   },
+   {
+    "id": 7,
+    "bed": 10,
+    "center": [
+     1.2000000000000002,
+     -2.1000000000000005
+    ],
+    "station": [
+     2.42,
+     -3.3200000000000003
+    ],
+    "crop": "strawberry"
+   },
+   {
+    "id": 8,
+    "bed": 5,
+    "center": [
+     -1.6999999999999997,
+     -5.0
+    ],
+    "station": [
+     -0.47999999999999976,
+     -6.22
+    ],
+    "crop": "corn"
+   },
+   {
+    "id": 9,
+    "bed": 9,
+    "center": [
+     -1.6999999999999997,
+     -2.1000000000000005
+    ],
+    "station": [
+     -0.47999999999999976,
+     -3.3200000000000003
+    ],
+    "crop": "sunflower"
+   },
+   {
+    "id": 10,
+    "bed": 4,
+    "center": [
+     -4.6,
+     -5.0
+    ],
+    "station": [
+     -3.38,
+     -6.22
+    ],
+    "crop": "strawberry"
+   },
+   {
+    "id": 11,
+    "bed": 8,
+    "center": [
+     -4.6,
+     -2.1000000000000005
+    ],
+    "station": [
+     -3.38,
+     -3.3200000000000003
+    ],
+    "crop": "pumpkin"
+   }
+  ],
+  "porch": [
+   [
+    -7.8,
+    1.45
+   ],
+   [
+    -6.75,
+    1.25
+   ],
+   [
+    -5.7,
+    1.45
+   ],
+   [
+    -4.75,
+    1.75
+   ],
+   [
+    -7.3,
+    0.35
+   ],
+   [
+    -6.2,
+    0.2
+   ],
+   [
+    -5.15,
+    0.55
+   ],
+   [
+    -4.1,
+    0.85
+   ]
+  ],
+  "meadow": [
+   [
+    2.85,
+    1.1
+   ],
+   [
+    4.251,
+    1.372
+   ],
+   [
+    3.575,
+    2.009
+   ],
+   [
+    2.475,
+    2.114
+   ],
+   [
+    1.594,
+    1.625
+   ],
+   [
+    1.449,
+    0.828
+   ],
+   [
+    2.125,
+    0.191
+   ],
+   [
+    3.225,
+    0.086
+   ],
+   [
+    4.106,
+    0.575
+   ]
+  ],
+  "meadow_center": [
+   2.85,
+   1.1
+  ],
+  "meadow_radius": [
+   1.8,
+   1.3
+  ],
+  "barnyard": [
+   [
+    3.95,
+    5.3
+   ],
+   [
+    4.95,
+    5.15
+   ],
+   [
+    5.85,
+    5.75
+   ],
+   [
+    4.35,
+    6.35
+   ],
+   [
+    5.4,
+    6.55
+   ],
+   [
+    4.0,
+    7.35
+   ],
+   [
+    1.35,
+    2.75
+   ],
+   [
+    -0.85,
+    2.55
+   ],
+   [
+    -1.9,
+    3.6
+   ],
+   [
+    2.4,
+    3.95
+   ],
+   [
+    -0.3,
+    1.6
+   ],
+   [
+    0.95,
+    1.55
+   ]
+  ],
+  "hubs": [
+   [
+    4.9,
+    -0.35
+   ],
+   [
+    1.2,
+    -0.35
+   ],
+   [
+    -2.4,
+    0.35
+   ],
+   [
+    -4.9,
+    0.95
+   ],
+   [
+    3.95,
+    2.75
+   ],
+   [
+    6.2,
+    -1.6
+   ],
+   [
+    6.95,
+    -5.0
+   ]
+  ]
+ },
+ "obstacles": [
+  [
+   -6.4,
+   4.9,
+   2.75
+  ],
+  [
+   0.7,
+   7.1,
+   3.05
+  ],
+  [
+   -2.5,
+   8.45,
+   1.25
+  ],
+  [
+   -7.9,
+   -2.0,
+   1.6
+  ],
+  [
+   0.2,
+   3.7,
+   0.55
+  ],
+  [
+   6.8,
+   2.6,
+   2.65
+  ],
+  [
+   8.1,
+   -2.9,
+   0.8
+  ]
+ ],
+ "island": [
+  [
+   148.6290740966797,
+   820.0000286102295
+  ],
+  [
+   1279.9999237060547,
+   1385.6854677200317
+  ],
+  [
+   2411.370849609375,
+   820.0000286102295
+  ],
+  [
+   1280.0,
+   254.31461334228516
+  ]
+ ],
+ "fx": {
+  "chimney": [
+   [
+    1291.3137817382812,
+    154.89892959594727
+   ]
+  ],
+  "lanterns": [
+   [
+    972.8327941894531,
+    425.6289482116699
+   ],
+   [
+    1941.8519592285156,
+    521.2512969970703
+   ],
+   [
+    1376.1665344238281,
+    1014.6188735961914
+   ],
+   [
+    1608.0975341796875,
+    859.0554237365723
+   ],
+   [
+    1181.0050964355469,
+    588.9406204223633
+   ],
+   [
+    1644.8670959472656,
+    704.9060821533203
+   ],
+   [
+    1203.6324310302734,
+    724.7051239013672
+   ]
+  ],
+  "windows": [
+   [
+    977.3583221435547,
+    428.99160385131836
+   ],
+   [
+    1130.0933837890625,
+    505.3591728210449
+   ],
+   [
+    1053.725814819336,
+    356.32410049438477
+   ],
+   [
+    1305.4559326171875,
+    499.70226287841797
+   ],
+   [
+    1401.622314453125,
+    451.6190528869629
+   ],
+   [
+    1903.9511108398438,
+    648.5860824584961
+   ],
+   [
+    1494.9604797363281,
+    576.0412216186523
+   ],
+   [
+    1579.813232421875,
+    618.4676170349121
+   ],
+   [
+    618.1480407714844,
+    527.3653030395508
+   ]
+  ],
+  "pond": {
+   "c": [
+    1811.744384765625,
+    933.251428604126
+   ],
+   "rx": 168.68739371986277,
+   "ry": 84.34369685993138
+  },
+  "hub": [
+   719.9714660644531,
+   322.19982147216797
+  ]
+ },
+ "bg": {
+  "day": "bg_day.webp",
+  "night": "bg_night.webp"
+ },
+ "occluders": [
+  {
+   "id": "house",
+   "x": 927,
+   "y": 102,
+   "w": 536,
+   "h": 518,
+   "sort": 640.39,
+   "src": {
+    "day": "occ/house_day.webp",
+    "night": "occ/house_night.webp"
+   }
+  },
+  {
+   "id": "barn",
+   "x": 1443,
+   "y": 185,
+   "w": 557,
+   "h": 585,
+   "sort": 767.67,
+   "src": {
+    "day": "occ/barn_day.webp",
+    "night": "occ/barn_night.webp"
+   }
+  },
+  {
+   "id": "silo",
+   "x": 1483,
+   "y": 29,
+   "w": 267,
+   "h": 551,
+   "sort": 550.45,
+   "src": {
+    "day": "occ/silo_day.webp",
+    "night": "occ/silo_night.webp"
+   }
+  },
+  {
+   "id": "windmill",
+   "x": 575,
+   "y": 160,
+   "w": 290,
+   "h": 569,
+   "sort": 701.91,
+   "src": {
+    "day": "occ/windmill_day.webp",
+    "night": "occ/windmill_night.webp"
+   }
+  },
+  {
+   "id": "bigtree",
+   "x": 1317,
+   "y": 298,
+   "w": 382,
+   "h": 450,
+   "sort": 742.5,
+   "src": {
+    "day": "occ/bigtree_day.webp",
+    "night": "occ/bigtree_night.webp"
+   }
+  },
+  {
+   "id": "lantern_2",
+   "x": 1354,
+   "y": 979,
+   "w": 45,
+   "h": 160,
+   "sort": 1131.13,
+   "src": {
+    "day": "occ/lantern_2_day.webp",
+    "night": "occ/lantern_2_night.webp"
+   }
+  },
+  {
+   "id": "lantern_3",
+   "x": 1586,
+   "y": 824,
+   "w": 45,
+   "h": 159,
+   "sort": 975.56,
+   "src": {
+    "day": "occ/lantern_3_day.webp",
+    "night": "occ/lantern_3_night.webp"
+   }
+  },
+  {
+   "id": "lantern_4",
+   "x": 1159,
+   "y": 554,
+   "w": 45,
+   "h": 159,
+   "sort": 705.45,
+   "src": {
+    "day": "occ/lantern_4_day.webp",
+    "night": "occ/lantern_4_night.webp"
+   }
+  },
+  {
+   "id": "lantern_5",
+   "x": 1622,
+   "y": 670,
+   "w": 45,
+   "h": 159,
+   "sort": 821.41,
+   "src": {
+    "day": "occ/lantern_5_day.webp",
+    "night": "occ/lantern_5_night.webp"
+   }
+  },
+  {
+   "id": "lantern_6",
+   "x": 1181,
+   "y": 689,
+   "w": 45,
+   "h": 160,
+   "sort": 841.21,
+   "src": {
+    "day": "occ/lantern_6_day.webp",
+    "night": "occ/lantern_6_night.webp"
+   }
+  },
+  {
+   "id": "well",
+   "x": 1498,
+   "y": 961,
+   "w": 152,
+   "h": 211,
+   "sort": 1159.41,
+   "src": {
+    "day": "occ/well_day.webp",
+    "night": "occ/well_night.webp"
+   }
+  },
+  {
+   "id": "board",
+   "x": 1119,
+   "y": 513,
+   "w": 118,
+   "h": 165,
+   "sort": 661.61,
+   "src": {
+    "day": "occ/board_day.webp",
+    "night": "occ/board_night.webp"
+   }
+  },
+  {
+   "id": "arch",
+   "x": 1152,
+   "y": 1078,
+   "w": 256,
+   "h": 279,
+   "sort": 1351.74,
+   "src": {
+    "day": "occ/arch_day.webp",
+    "night": "occ/arch_night.webp"
+   }
+  },
+  {
+   "id": "tree_a",
+   "x": 1149,
+   "y": 31,
+   "w": 247,
+   "h": 309,
+   "sort": 336.34,
+   "src": {
+    "day": "occ/tree_a_day.webp",
+    "night": "occ/tree_a_night.webp"
+   }
+  },
+  {
+   "id": "pine_a",
+   "x": 1433,
+   "y": 188,
+   "w": 243,
+   "h": 268,
+   "sort": 449.48,
+   "src": {
+    "day": "occ/pine_a_day.webp",
+    "night": "occ/pine_a_night.webp"
+   }
+  },
+  {
+   "id": "tree_c",
+   "x": 1937,
+   "y": 416,
+   "w": 235,
+   "h": 291,
+   "sort": 706.01,
+   "src": {
+    "day": "occ/tree_c_day.webp",
+    "night": "occ/tree_c_night.webp"
+   }
+  },
+  {
+   "id": "pine_b",
+   "x": 2159,
+   "y": 568,
+   "w": 222,
+   "h": 276,
+   "sort": 845.46,
+   "src": {
+    "day": "occ/pine_b_day.webp",
+    "night": "occ/pine_b_night.webp"
+   }
+  },
+  {
+   "id": "tree_d",
+   "x": 2064,
+   "y": 648,
+   "w": 201,
+   "h": 260,
+   "sort": 905.14,
+   "src": {
+    "day": "occ/tree_d_day.webp",
+    "night": "occ/tree_d_night.webp"
+   }
+  },
+  {
+   "id": "pine_c",
+   "x": 342,
+   "y": 466,
+   "w": 247,
+   "h": 273,
+   "sort": 734.44,
+   "src": {
+    "day": "occ/pine_c_day.webp",
+    "night": "occ/pine_c_night.webp"
+   }
+  },
+  {
+   "id": "pine_d",
+   "x": 212,
+   "y": 599,
+   "w": 212,
+   "h": 235,
+   "sort": 827.78,
+   "src": {
+    "day": "occ/pine_d_day.webp",
+    "night": "occ/pine_d_night.webp"
+   }
+  },
+  {
+   "id": "tree_e",
+   "x": 704,
+   "y": 314,
+   "w": 196,
+   "h": 246,
+   "sort": 557.8,
+   "src": {
+    "day": "occ/tree_e_day.webp",
+    "night": "occ/tree_e_night.webp"
+   }
+  }
+ ],
+ "blades": {
+  "x": 469,
+  "y": 104,
+  "w": 500,
+  "h": 435,
+  "frames": {
+   "day": [
+    "blades/day_00.webp",
+    "blades/day_01.webp",
+    "blades/day_02.webp",
+    "blades/day_03.webp",
+    "blades/day_04.webp",
+    "blades/day_05.webp",
+    "blades/day_06.webp",
+    "blades/day_07.webp",
+    "blades/day_08.webp",
+    "blades/day_09.webp",
+    "blades/day_10.webp",
+    "blades/day_11.webp"
+   ],
+   "night": [
+    "blades/night_00.webp",
+    "blades/night_01.webp",
+    "blades/night_02.webp",
+    "blades/night_03.webp",
+    "blades/night_04.webp",
+    "blades/night_05.webp",
+    "blades/night_06.webp",
+    "blades/night_07.webp",
+    "blades/night_08.webp",
+    "blades/night_09.webp",
+    "blades/night_10.webp",
+    "blades/night_11.webp"
+   ]
+  },
+  "sort": 702.41
+ },
+ "animals": {
+  "fox": {
+   "w": 216.0,
+   "h": 200.0,
+   "ax": 90.72,
+   "ay": 164.0,
+   "frames": {
+    "se_idle": "animals/fox/se_idle.webp",
+    "se_walk0": "animals/fox/se_walk0.webp",
+    "se_walk1": "animals/fox/se_walk1.webp",
+    "se_walk2": "animals/fox/se_walk2.webp",
+    "se_walk3": "animals/fox/se_walk3.webp",
+    "se_work0": "animals/fox/se_work0.webp",
+    "se_work1": "animals/fox/se_work1.webp",
+    "se_sleep": "animals/fox/se_sleep.webp",
+    "ne_idle": "animals/fox/ne_idle.webp",
+    "ne_walk0": "animals/fox/ne_walk0.webp",
+    "ne_walk1": "animals/fox/ne_walk1.webp",
+    "ne_walk2": "animals/fox/ne_walk2.webp",
+    "ne_walk3": "animals/fox/ne_walk3.webp",
+    "nw_idle": "animals/fox/nw_idle.webp",
+    "nw_walk0": "animals/fox/nw_walk0.webp",
+    "nw_walk1": "animals/fox/nw_walk1.webp",
+    "nw_walk2": "animals/fox/nw_walk2.webp",
+    "nw_walk3": "animals/fox/nw_walk3.webp",
+    "sw_idle": "animals/fox/sw_idle.webp",
+    "sw_walk0": "animals/fox/sw_walk0.webp",
+    "sw_walk1": "animals/fox/sw_walk1.webp",
+    "sw_walk2": "animals/fox/sw_walk2.webp",
+    "sw_walk3": "animals/fox/sw_walk3.webp",
+    "sw_work0": "animals/fox/sw_work0.webp",
+    "sw_work1": "animals/fox/sw_work1.webp",
+    "sw_sleep": "animals/fox/sw_sleep.webp"
+   },
+   "name": {
+    "zh": "\u72d0\u72f8",
+    "en": "Fox"
+   }
+  },
+  "cat": {
+   "w": 216.0,
+   "h": 200.0,
+   "ax": 90.72,
+   "ay": 164.0,
+   "frames": {
+    "se_idle": "animals/cat/se_idle.webp",
+    "se_walk0": "animals/cat/se_walk0.webp",
+    "se_walk1": "animals/cat/se_walk1.webp",
+    "se_walk2": "animals/cat/se_walk2.webp",
+    "se_walk3": "animals/cat/se_walk3.webp",
+    "se_work0": "animals/cat/se_work0.webp",
+    "se_work1": "animals/cat/se_work1.webp",
+    "se_sleep": "animals/cat/se_sleep.webp",
+    "ne_idle": "animals/cat/ne_idle.webp",
+    "ne_walk0": "animals/cat/ne_walk0.webp",
+    "ne_walk1": "animals/cat/ne_walk1.webp",
+    "ne_walk2": "animals/cat/ne_walk2.webp",
+    "ne_walk3": "animals/cat/ne_walk3.webp",
+    "nw_idle": "animals/cat/nw_idle.webp",
+    "nw_walk0": "animals/cat/nw_walk0.webp",
+    "nw_walk1": "animals/cat/nw_walk1.webp",
+    "nw_walk2": "animals/cat/nw_walk2.webp",
+    "nw_walk3": "animals/cat/nw_walk3.webp",
+    "sw_idle": "animals/cat/sw_idle.webp",
+    "sw_walk0": "animals/cat/sw_walk0.webp",
+    "sw_walk1": "animals/cat/sw_walk1.webp",
+    "sw_walk2": "animals/cat/sw_walk2.webp",
+    "sw_walk3": "animals/cat/sw_walk3.webp",
+    "sw_work0": "animals/cat/sw_work0.webp",
+    "sw_work1": "animals/cat/sw_work1.webp",
+    "sw_sleep": "animals/cat/sw_sleep.webp"
+   },
+   "name": {
+    "zh": "\u8c93\u54aa",
+    "en": "Cat"
+   }
+  },
+  "rabbit": {
+   "w": 216.0,
+   "h": 200.0,
+   "ax": 90.72,
+   "ay": 164.0,
+   "frames": {
+    "se_idle": "animals/rabbit/se_idle.webp",
+    "se_walk0": "animals/rabbit/se_walk0.webp",
+    "se_walk1": "animals/rabbit/se_walk1.webp",
+    "se_walk2": "animals/rabbit/se_walk2.webp",
+    "se_walk3": "animals/rabbit/se_walk3.webp",
+    "se_work0": "animals/rabbit/se_work0.webp",
+    "se_work1": "animals/rabbit/se_work1.webp",
+    "se_sleep": "animals/rabbit/se_sleep.webp",
+    "ne_idle": "animals/rabbit/ne_idle.webp",
+    "ne_walk0": "animals/rabbit/ne_walk0.webp",
+    "ne_walk1": "animals/rabbit/ne_walk1.webp",
+    "ne_walk2": "animals/rabbit/ne_walk2.webp",
+    "ne_walk3": "animals/rabbit/ne_walk3.webp",
+    "nw_idle": "animals/rabbit/nw_idle.webp",
+    "nw_walk0": "animals/rabbit/nw_walk0.webp",
+    "nw_walk1": "animals/rabbit/nw_walk1.webp",
+    "nw_walk2": "animals/rabbit/nw_walk2.webp",
+    "nw_walk3": "animals/rabbit/nw_walk3.webp",
+    "sw_idle": "animals/rabbit/sw_idle.webp",
+    "sw_walk0": "animals/rabbit/sw_walk0.webp",
+    "sw_walk1": "animals/rabbit/sw_walk1.webp",
+    "sw_walk2": "animals/rabbit/sw_walk2.webp",
+    "sw_walk3": "animals/rabbit/sw_walk3.webp",
+    "sw_work0": "animals/rabbit/sw_work0.webp",
+    "sw_work1": "animals/rabbit/sw_work1.webp",
+    "sw_sleep": "animals/rabbit/sw_sleep.webp"
+   },
+   "name": {
+    "zh": "\u5154\u5154",
+    "en": "Bunny"
+   }
+  },
+  "owl": {
+   "w": 216.0,
+   "h": 200.0,
+   "ax": 90.72,
+   "ay": 164.0,
+   "frames": {
+    "se_idle": "animals/owl/se_idle.webp",
+    "se_walk0": "animals/owl/se_walk0.webp",
+    "se_walk1": "animals/owl/se_walk1.webp",
+    "se_walk2": "animals/owl/se_walk2.webp",
+    "se_walk3": "animals/owl/se_walk3.webp",
+    "se_work0": "animals/owl/se_work0.webp",
+    "se_work1": "animals/owl/se_work1.webp",
+    "se_sleep": "animals/owl/se_sleep.webp",
+    "ne_idle": "animals/owl/ne_idle.webp",
+    "ne_walk0": "animals/owl/ne_walk0.webp",
+    "ne_walk1": "animals/owl/ne_walk1.webp",
+    "ne_walk2": "animals/owl/ne_walk2.webp",
+    "ne_walk3": "animals/owl/ne_walk3.webp",
+    "nw_idle": "animals/owl/nw_idle.webp",
+    "nw_walk0": "animals/owl/nw_walk0.webp",
+    "nw_walk1": "animals/owl/nw_walk1.webp",
+    "nw_walk2": "animals/owl/nw_walk2.webp",
+    "nw_walk3": "animals/owl/nw_walk3.webp",
+    "sw_idle": "animals/owl/sw_idle.webp",
+    "sw_walk0": "animals/owl/sw_walk0.webp",
+    "sw_walk1": "animals/owl/sw_walk1.webp",
+    "sw_walk2": "animals/owl/sw_walk2.webp",
+    "sw_walk3": "animals/owl/sw_walk3.webp",
+    "sw_work0": "animals/owl/sw_work0.webp",
+    "sw_work1": "animals/owl/sw_work1.webp",
+    "sw_sleep": "animals/owl/sw_sleep.webp"
+   },
+   "name": {
+    "zh": "\u8c93\u982d\u9df9",
+    "en": "Owl"
+   }
+  },
+  "cow": {
+   "w": 216.0,
+   "h": 200.0,
+   "ax": 90.72,
+   "ay": 164.0,
+   "frames": {
+    "se_idle": "animals/cow/se_idle.webp",
+    "se_walk0": "animals/cow/se_walk0.webp",
+    "se_walk1": "animals/cow/se_walk1.webp",
+    "se_walk2": "animals/cow/se_walk2.webp",
+    "se_walk3": "animals/cow/se_walk3.webp",
+    "se_work0": "animals/cow/se_work0.webp",
+    "se_work1": "animals/cow/se_work1.webp",
+    "se_sleep": "animals/cow/se_sleep.webp",
+    "ne_idle": "animals/cow/ne_idle.webp",
+    "ne_walk0": "animals/cow/ne_walk0.webp",
+    "ne_walk1": "animals/cow/ne_walk1.webp",
+    "ne_walk2": "animals/cow/ne_walk2.webp",
+    "ne_walk3": "animals/cow/ne_walk3.webp",
+    "nw_idle": "animals/cow/nw_idle.webp",
+    "nw_walk0": "animals/cow/nw_walk0.webp",
+    "nw_walk1": "animals/cow/nw_walk1.webp",
+    "nw_walk2": "animals/cow/nw_walk2.webp",
+    "nw_walk3": "animals/cow/nw_walk3.webp",
+    "sw_idle": "animals/cow/sw_idle.webp",
+    "sw_walk0": "animals/cow/sw_walk0.webp",
+    "sw_walk1": "animals/cow/sw_walk1.webp",
+    "sw_walk2": "animals/cow/sw_walk2.webp",
+    "sw_walk3": "animals/cow/sw_walk3.webp",
+    "sw_work0": "animals/cow/sw_work0.webp",
+    "sw_work1": "animals/cow/sw_work1.webp",
+    "sw_sleep": "animals/cow/sw_sleep.webp"
+   },
+   "name": {
+    "zh": "\u4e73\u725b",
+    "en": "Cow"
+   }
+  },
+  "pig": {
+   "w": 216.0,
+   "h": 200.0,
+   "ax": 90.72,
+   "ay": 164.0,
+   "frames": {
+    "se_idle": "animals/pig/se_idle.webp",
+    "se_walk0": "animals/pig/se_walk0.webp",
+    "se_walk1": "animals/pig/se_walk1.webp",
+    "se_walk2": "animals/pig/se_walk2.webp",
+    "se_walk3": "animals/pig/se_walk3.webp",
+    "se_work0": "animals/pig/se_work0.webp",
+    "se_work1": "animals/pig/se_work1.webp",
+    "se_sleep": "animals/pig/se_sleep.webp",
+    "ne_idle": "animals/pig/ne_idle.webp",
+    "ne_walk0": "animals/pig/ne_walk0.webp",
+    "ne_walk1": "animals/pig/ne_walk1.webp",
+    "ne_walk2": "animals/pig/ne_walk2.webp",
+    "ne_walk3": "animals/pig/ne_walk3.webp",
+    "nw_idle": "animals/pig/nw_idle.webp",
+    "nw_walk0": "animals/pig/nw_walk0.webp",
+    "nw_walk1": "animals/pig/nw_walk1.webp",
+    "nw_walk2": "animals/pig/nw_walk2.webp",
+    "nw_walk3": "animals/pig/nw_walk3.webp",
+    "sw_idle": "animals/pig/sw_idle.webp",
+    "sw_walk0": "animals/pig/sw_walk0.webp",
+    "sw_walk1": "animals/pig/sw_walk1.webp",
+    "sw_walk2": "animals/pig/sw_walk2.webp",
+    "sw_walk3": "animals/pig/sw_walk3.webp",
+    "sw_work0": "animals/pig/sw_work0.webp",
+    "sw_work1": "animals/pig/sw_work1.webp",
+    "sw_sleep": "animals/pig/sw_sleep.webp"
+   },
+   "name": {
+    "zh": "\u5c0f\u8c6c",
+    "en": "Piggy"
+   }
+  },
+  "sheep": {
+   "w": 216.0,
+   "h": 200.0,
+   "ax": 90.72,
+   "ay": 164.0,
+   "frames": {
+    "se_idle": "animals/sheep/se_idle.webp",
+    "se_walk0": "animals/sheep/se_walk0.webp",
+    "se_walk1": "animals/sheep/se_walk1.webp",
+    "se_walk2": "animals/sheep/se_walk2.webp",
+    "se_walk3": "animals/sheep/se_walk3.webp",
+    "se_work0": "animals/sheep/se_work0.webp",
+    "se_work1": "animals/sheep/se_work1.webp",
+    "se_sleep": "animals/sheep/se_sleep.webp",
+    "ne_idle": "animals/sheep/ne_idle.webp",
+    "ne_walk0": "animals/sheep/ne_walk0.webp",
+    "ne_walk1": "animals/sheep/ne_walk1.webp",
+    "ne_walk2": "animals/sheep/ne_walk2.webp",
+    "ne_walk3": "animals/sheep/ne_walk3.webp",
+    "nw_idle": "animals/sheep/nw_idle.webp",
+    "nw_walk0": "animals/sheep/nw_walk0.webp",
+    "nw_walk1": "animals/sheep/nw_walk1.webp",
+    "nw_walk2": "animals/sheep/nw_walk2.webp",
+    "nw_walk3": "animals/sheep/nw_walk3.webp",
+    "sw_idle": "animals/sheep/sw_idle.webp",
+    "sw_walk0": "animals/sheep/sw_walk0.webp",
+    "sw_walk1": "animals/sheep/sw_walk1.webp",
+    "sw_walk2": "animals/sheep/sw_walk2.webp",
+    "sw_walk3": "animals/sheep/sw_walk3.webp",
+    "sw_work0": "animals/sheep/sw_work0.webp",
+    "sw_work1": "animals/sheep/sw_work1.webp",
+    "sw_sleep": "animals/sheep/sw_sleep.webp"
+   },
+   "name": {
+    "zh": "\u7dbf\u7f8a",
+    "en": "Sheep"
+   }
+  },
+  "hen": {
+   "w": 216.0,
+   "h": 200.0,
+   "ax": 90.72,
+   "ay": 164.0,
+   "frames": {
+    "se_idle": "animals/hen/se_idle.webp",
+    "se_walk0": "animals/hen/se_walk0.webp",
+    "se_walk1": "animals/hen/se_walk1.webp",
+    "se_walk2": "animals/hen/se_walk2.webp",
+    "se_walk3": "animals/hen/se_walk3.webp",
+    "se_work0": "animals/hen/se_work0.webp",
+    "se_work1": "animals/hen/se_work1.webp",
+    "se_sleep": "animals/hen/se_sleep.webp",
+    "ne_idle": "animals/hen/ne_idle.webp",
+    "ne_walk0": "animals/hen/ne_walk0.webp",
+    "ne_walk1": "animals/hen/ne_walk1.webp",
+    "ne_walk2": "animals/hen/ne_walk2.webp",
+    "ne_walk3": "animals/hen/ne_walk3.webp",
+    "nw_idle": "animals/hen/nw_idle.webp",
+    "nw_walk0": "animals/hen/nw_walk0.webp",
+    "nw_walk1": "animals/hen/nw_walk1.webp",
+    "nw_walk2": "animals/hen/nw_walk2.webp",
+    "nw_walk3": "animals/hen/nw_walk3.webp",
+    "sw_idle": "animals/hen/sw_idle.webp",
+    "sw_walk0": "animals/hen/sw_walk0.webp",
+    "sw_walk1": "animals/hen/sw_walk1.webp",
+    "sw_walk2": "animals/hen/sw_walk2.webp",
+    "sw_walk3": "animals/hen/sw_walk3.webp",
+    "sw_work0": "animals/hen/sw_work0.webp",
+    "sw_work1": "animals/hen/sw_work1.webp",
+    "sw_sleep": "animals/hen/sw_sleep.webp"
+   },
+   "name": {
+    "zh": "\u6bcd\u96de",
+    "en": "Hen"
+   }
+  },
+  "duck": {
+   "w": 216.0,
+   "h": 200.0,
+   "ax": 90.72,
+   "ay": 164.0,
+   "frames": {
+    "se_idle": "animals/duck/se_idle.webp",
+    "se_walk0": "animals/duck/se_walk0.webp",
+    "se_walk1": "animals/duck/se_walk1.webp",
+    "se_walk2": "animals/duck/se_walk2.webp",
+    "se_walk3": "animals/duck/se_walk3.webp",
+    "se_work0": "animals/duck/se_work0.webp",
+    "se_work1": "animals/duck/se_work1.webp",
+    "se_sleep": "animals/duck/se_sleep.webp",
+    "ne_idle": "animals/duck/ne_idle.webp",
+    "ne_walk0": "animals/duck/ne_walk0.webp",
+    "ne_walk1": "animals/duck/ne_walk1.webp",
+    "ne_walk2": "animals/duck/ne_walk2.webp",
+    "ne_walk3": "animals/duck/ne_walk3.webp",
+    "nw_idle": "animals/duck/nw_idle.webp",
+    "nw_walk0": "animals/duck/nw_walk0.webp",
+    "nw_walk1": "animals/duck/nw_walk1.webp",
+    "nw_walk2": "animals/duck/nw_walk2.webp",
+    "nw_walk3": "animals/duck/nw_walk3.webp",
+    "sw_idle": "animals/duck/sw_idle.webp",
+    "sw_walk0": "animals/duck/sw_walk0.webp",
+    "sw_walk1": "animals/duck/sw_walk1.webp",
+    "sw_walk2": "animals/duck/sw_walk2.webp",
+    "sw_walk3": "animals/duck/sw_walk3.webp",
+    "sw_work0": "animals/duck/sw_work0.webp",
+    "sw_work1": "animals/duck/sw_work1.webp",
+    "sw_sleep": "animals/duck/sw_sleep.webp"
+   },
+   "name": {
+    "zh": "\u5c0f\u9d28",
+    "en": "Duck"
+   }
+  },
+  "corgi": {
+   "w": 216.0,
+   "h": 200.0,
+   "ax": 90.72,
+   "ay": 164.0,
+   "frames": {
+    "se_idle": "animals/corgi/se_idle.webp",
+    "se_walk0": "animals/corgi/se_walk0.webp",
+    "se_walk1": "animals/corgi/se_walk1.webp",
+    "se_walk2": "animals/corgi/se_walk2.webp",
+    "se_walk3": "animals/corgi/se_walk3.webp",
+    "se_work0": "animals/corgi/se_work0.webp",
+    "se_work1": "animals/corgi/se_work1.webp",
+    "se_sleep": "animals/corgi/se_sleep.webp",
+    "ne_idle": "animals/corgi/ne_idle.webp",
+    "ne_walk0": "animals/corgi/ne_walk0.webp",
+    "ne_walk1": "animals/corgi/ne_walk1.webp",
+    "ne_walk2": "animals/corgi/ne_walk2.webp",
+    "ne_walk3": "animals/corgi/ne_walk3.webp",
+    "nw_idle": "animals/corgi/nw_idle.webp",
+    "nw_walk0": "animals/corgi/nw_walk0.webp",
+    "nw_walk1": "animals/corgi/nw_walk1.webp",
+    "nw_walk2": "animals/corgi/nw_walk2.webp",
+    "nw_walk3": "animals/corgi/nw_walk3.webp",
+    "sw_idle": "animals/corgi/sw_idle.webp",
+    "sw_walk0": "animals/corgi/sw_walk0.webp",
+    "sw_walk1": "animals/corgi/sw_walk1.webp",
+    "sw_walk2": "animals/corgi/sw_walk2.webp",
+    "sw_walk3": "animals/corgi/sw_walk3.webp",
+    "sw_work0": "animals/corgi/sw_work0.webp",
+    "sw_work1": "animals/corgi/sw_work1.webp",
+    "sw_sleep": "animals/corgi/sw_sleep.webp"
+   },
+   "name": {
+    "zh": "\u67ef\u57fa",
+    "en": "Corgi"
+   }
+  },
+  "goat": {
+   "w": 216.0,
+   "h": 200.0,
+   "ax": 90.72,
+   "ay": 164.0,
+   "frames": {
+    "se_idle": "animals/goat/se_idle.webp",
+    "se_walk0": "animals/goat/se_walk0.webp",
+    "se_walk1": "animals/goat/se_walk1.webp",
+    "se_walk2": "animals/goat/se_walk2.webp",
+    "se_walk3": "animals/goat/se_walk3.webp",
+    "se_work0": "animals/goat/se_work0.webp",
+    "se_work1": "animals/goat/se_work1.webp",
+    "se_sleep": "animals/goat/se_sleep.webp",
+    "ne_idle": "animals/goat/ne_idle.webp",
+    "ne_walk0": "animals/goat/ne_walk0.webp",
+    "ne_walk1": "animals/goat/ne_walk1.webp",
+    "ne_walk2": "animals/goat/ne_walk2.webp",
+    "ne_walk3": "animals/goat/ne_walk3.webp",
+    "nw_idle": "animals/goat/nw_idle.webp",
+    "nw_walk0": "animals/goat/nw_walk0.webp",
+    "nw_walk1": "animals/goat/nw_walk1.webp",
+    "nw_walk2": "animals/goat/nw_walk2.webp",
+    "nw_walk3": "animals/goat/nw_walk3.webp",
+    "sw_idle": "animals/goat/sw_idle.webp",
+    "sw_walk0": "animals/goat/sw_walk0.webp",
+    "sw_walk1": "animals/goat/sw_walk1.webp",
+    "sw_walk2": "animals/goat/sw_walk2.webp",
+    "sw_walk3": "animals/goat/sw_walk3.webp",
+    "sw_work0": "animals/goat/sw_work0.webp",
+    "sw_work1": "animals/goat/sw_work1.webp",
+    "sw_sleep": "animals/goat/sw_sleep.webp"
+   },
+   "name": {
+    "zh": "\u5c71\u7f8a",
+    "en": "Goat"
+   }
+  },
+  "pony": {
+   "w": 216.0,
+   "h": 200.0,
+   "ax": 90.72,
+   "ay": 164.0,
+   "frames": {
+    "se_idle": "animals/pony/se_idle.webp",
+    "se_walk0": "animals/pony/se_walk0.webp",
+    "se_walk1": "animals/pony/se_walk1.webp",
+    "se_walk2": "animals/pony/se_walk2.webp",
+    "se_walk3": "animals/pony/se_walk3.webp",
+    "se_work0": "animals/pony/se_work0.webp",
+    "se_work1": "animals/pony/se_work1.webp",
+    "se_sleep": "animals/pony/se_sleep.webp",
+    "ne_idle": "animals/pony/ne_idle.webp",
+    "ne_walk0": "animals/pony/ne_walk0.webp",
+    "ne_walk1": "animals/pony/ne_walk1.webp",
+    "ne_walk2": "animals/pony/ne_walk2.webp",
+    "ne_walk3": "animals/pony/ne_walk3.webp",
+    "nw_idle": "animals/pony/nw_idle.webp",
+    "nw_walk0": "animals/pony/nw_walk0.webp",
+    "nw_walk1": "animals/pony/nw_walk1.webp",
+    "nw_walk2": "animals/pony/nw_walk2.webp",
+    "nw_walk3": "animals/pony/nw_walk3.webp",
+    "sw_idle": "animals/pony/sw_idle.webp",
+    "sw_walk0": "animals/pony/sw_walk0.webp",
+    "sw_walk1": "animals/pony/sw_walk1.webp",
+    "sw_walk2": "animals/pony/sw_walk2.webp",
+    "sw_walk3": "animals/pony/sw_walk3.webp",
+    "sw_work0": "animals/pony/sw_work0.webp",
+    "sw_work1": "animals/pony/sw_work1.webp",
+    "sw_sleep": "animals/pony/sw_sleep.webp"
+   },
+   "name": {
+    "zh": "\u5c0f\u99ac",
+    "en": "Pony"
+   }
+  }
+ },
+ "crops": {
+  "carrot": {
+   "w": 248.0,
+   "h": 264.0,
+   "ax": 124.0,
+   "ay": 174.24,
+   "stages": {
+    "1": "crops/carrot_1.webp",
+    "2": "crops/carrot_2.webp",
+    "3": "crops/carrot_3.webp"
+   }
+  },
+  "cabbage": {
+   "w": 248.0,
+   "h": 264.0,
+   "ax": 124.0,
+   "ay": 174.24,
+   "stages": {
+    "1": "crops/cabbage_1.webp",
+    "2": "crops/cabbage_2.webp",
+    "3": "crops/cabbage_3.webp"
+   }
+  },
+  "pumpkin": {
+   "w": 248.0,
+   "h": 264.0,
+   "ax": 124.0,
+   "ay": 174.24,
+   "stages": {
+    "1": "crops/pumpkin_1.webp",
+    "2": "crops/pumpkin_2.webp",
+    "3": "crops/pumpkin_3.webp"
+   }
+  },
+  "sunflower": {
+   "w": 248.0,
+   "h": 264.0,
+   "ax": 124.0,
+   "ay": 174.24,
+   "stages": {
+    "1": "crops/sunflower_1.webp",
+    "2": "crops/sunflower_2.webp",
+    "3": "crops/sunflower_3.webp"
+   }
+  },
+  "strawberry": {
+   "w": 248.0,
+   "h": 264.0,
+   "ax": 124.0,
+   "ay": 174.24,
+   "stages": {
+    "1": "crops/strawberry_1.webp",
+    "2": "crops/strawberry_2.webp",
+    "3": "crops/strawberry_3.webp"
+   }
+  },
+  "corn": {
+   "w": 248.0,
+   "h": 264.0,
+   "ax": 124.0,
+   "ay": 174.24,
+   "stages": {
+    "1": "crops/corn_1.webp",
+    "2": "crops/corn_2.webp",
+    "3": "crops/corn_3.webp"
+   }
+  }
+ },
+ "generated": "2026-11-08 16:34:34"
+}

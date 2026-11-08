@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Agent Farm · AI 代理農場</title>
+  <meta name="description" content="A Blender-rendered 2.5D farm where every AI agent is a farm animal showing its live status." />
+  <meta name="theme-color" content="#9BD3F2" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=Noto+Sans+TC:wght@500;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/farm.css" />
+</head>
+<body>
+  <div id="app" data-theme="day" class="preload">
+    <!-- sky (behind the island) -->
+    <div id="sky" aria-hidden="true">
+      <div class="sky-grad day"></div>
+      <div class="sky-grad night"></div>
+      <div class="sun"></div>
+      <div class="moon"></div>
+      <div id="stars"></div>
+      <div id="clouds"></div>
+    </div>
+
+    <!-- the 2.5D world (pan / zoom) -->
+    <div id="viewport">
+      <div id="world">
+        <div id="island-shadow"></div>
+        <img id="bg-day" class="bg day" alt="" draggable="false" />
+        <img id="bg-night" class="bg night" alt="" draggable="false" />
+        <div id="ground-fx"></div>
+        <div id="stage"></div>
+        <div id="air-fx"></div>
+      </div>
+    </div>
+    <div id="labels" aria-hidden="true"></div>
+
+    <!-- top bar -->
+    <header id="topbar">
+      <div class="brand">
+        <svg class="logo" viewBox="0 0 48 48" aria-hidden="true">
+          <circle cx="24" cy="24" r="22" fill="#FFF6E2" />
+          <path d="M24 38V22" stroke="#5E9C3E" stroke-width="3.4" stroke-linecap="round" />
+          <path d="M24 25c-1-6-6-9-12-8 0 6 5 10 12 8z" fill="#7DBB5E" />
+          <path d="M24 22c1-7 6-11 13-10 0 7-6 12-13 10z" fill="#9BCC70" />
+          <ellipse cx="24" cy="39" rx="10" ry="3" fill="#C39467" />
+        </svg>
+        <div class="brand-text">
+          <h1>Agent Farm</h1>
+          <p id="subtitle" data-i18n="subtitle">AI 代理農場</p>
+        </div>
+      </div>
+      <nav id="chips" aria-label="status summary"></nav>
+      <div class="tools">
+        <div class="clock"><span id="clock-icon">☀️</span><span id="clock">--:--</span></div>
+        <button class="icon-btn" id="btn-theme" title="Day / Night" aria-label="Day / Night"></button>
+        <button class="icon-btn" id="btn-lang" title="中文 / English" aria-label="Language">EN</button>
+        <button class="icon-btn" id="btn-help" title="Connect platforms" aria-label="Help">
+          <svg viewBox="0 0 24 24"><path d="M9.2 9a3 3 0 1 1 4.3 2.7c-.9.4-1.5 1.2-1.5 2.2v.4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><circle cx="12" cy="18" r="1.3" fill="currentColor"/></svg>
+        </button>
+        <button class="icon-btn" id="btn-panel" title="Agents" aria-label="Toggle panel">
+          <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- side panel -->
+    <aside id="panel" aria-label="agents">
+      <div class="panel-grip" id="panel-grip"></div>
+      <div class="panel-head">
+        <h2><span data-i18n="members">農場成員</span> <span id="count" class="count">0</span></h2>
+        <div class="seg" id="filters" role="tablist">
+          <button data-filter="all" class="on" data-i18n="f_all">全部</button>
+          <button data-filter="attention" data-i18n="f_attention">需要你</button>
+          <button data-filter="busy" data-i18n="f_busy">忙碌</button>
+          <button data-filter="rest" data-i18n="f_rest">休息</button>
+        </div>
+      </div>
+      <div id="cards" class="cards"></div>
+      <div class="panel-foot">
+        <div id="legend" class="legend"></div>
+        <div id="demo-note" class="demo-note" hidden></div>
+      </div>
+    </aside>
+
+    <!-- zoom controls -->
+    <div id="zoom">
+      <button class="icon-btn" id="zoom-in" aria-label="Zoom in">+</button>
+      <button class="icon-btn" id="zoom-out" aria-label="Zoom out">−</button>
+      <button class="icon-btn" id="zoom-fit" aria-label="Fit">
+        <svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+
+    <div id="tooltip" role="tooltip" hidden></div>
+    <div id="toasts" aria-live="polite"></div>
+
+    <!-- help / connect dialog -->
+    <dialog id="help">
+      <form method="dialog" class="dlg">
+        <header>
+          <h2 data-i18n="help_title">連接你的 AI 平台</h2>
+          <button class="icon-btn" value="close" aria-label="Close">✕</button>
+        </header>
+        <div id="help-body"></div>
+      </form>
+    </dialog>
+
+    <div id="loading">
+      <div class="sprout"><span></span><span></span><span></span></div>
+      <p data-i18n="loading">正在整理農場…</p>
+    </div>
+    <div id="offline" hidden data-i18n="offline">與農場伺服器的連線中斷，重新連線中…</div>
+  </div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

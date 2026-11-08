@@ -1,0 +1,19 @@
+# runtime state: real session ids and animal assignments from this machine
+data/
+
+# dependencies / caches
+node_modules/
+__pycache__/
+*.pyc
+
+# Blender backups and temp renders
+*.blend1
+*.blend@
+/render-tmp/
+
+# local env and editor/OS files
+.env
+.env.*
+*.log
+.DS_Store
+.claude/settings.local.json

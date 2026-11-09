@@ -1,9 +1,16 @@
 // OpenAI Codex (CLI, IDE extension and Desktop): ~/.codex/sessions/YYYY/MM/DD/rollout-*.jsonl
+import fsp from 'node:fs/promises';
 import path from 'node:path';
 import { Session, CFG, clip } from '../session.mjs';
 import { HOME, JsonlTail, listDir, realDir, statSafe, ts, textOf, stripTags } from '../util.mjs';
 
 const ROOT = path.join(process.env.CODEX_HOME || path.join(HOME, '.codex'), 'sessions');
+
+// Codex keeps the chat titles (what its sidebar shows) here: one {id, thread_name} line per rename
+const INDEX = path.join(path.dirname(ROOT), 'session_index.jsonl');
+// Codex Desktop starts every chat in its own folder named after the first prompt, under a date
+// folder (…/2026-11-09/give-me-a-morning-brief-with): the folder name is a poor label
+const AUTO_DIR = /^\d{4}-\d{2}-\d{2}$/;
 
 const pad = (n) => String(n).padStart(2, '0');
 
@@ -34,13 +41,33 @@ export class CodexCollector {
     this.lastScan = 0;
     this.found = false;
     this.root = ROOT;
+    this.titles = new Map();
+    this.indexMtime = 0;
   }
 
   info() {
     return { platform: this.platform, root: this.root, found: this.found, sessions: this.files.size };
   }
 
+  /** thread titles by session id, re-read only when the index file changed */
+  async loadTitles() {
+    const st = await statSafe(INDEX);
+    if (!st || st.mtimeMs === this.indexMtime) return;
+    try {
+      const titles = new Map();
+      for (const line of (await fsp.readFile(INDEX, 'utf8')).split('\n')) {
+        try {
+          const d = JSON.parse(line);
+          if (d.id && d.thread_name) titles.set(d.id, String(d.thread_name));  // later lines win
+        } catch { /* partial line */ }
+      }
+      this.titles = titles;
+      this.indexMtime = st.mtimeMs;
+    } catch { /* unreadable: keep what we had */ }
+  }
+
   async scan(now) {
+    await this.loadTitles();
     const root = await realDir(this.root);
     const days = [];
     const span = Math.ceil(CFG.windowMs / 86400e3) + 1;
@@ -91,6 +118,12 @@ export class CodexCollector {
       if (st.mtimeMs === rec.tail.mtime && st.size === rec.tail.size) continue;
       for (const r of await rec.tail.read(st)) this.ingest(rec.session, r);
       if (!rec.session.lastTs) rec.session.lastTs = st.mtimeMs;
+    }
+    for (const { session: s } of this.files.values()) {
+      const title = this.titles.get(s.extra.sessionId);
+      if (!title) continue;
+      s.extra.label = clip(title, 60);
+      if (AUTO_DIR.test(path.basename(path.dirname(s.project || '')))) s.name = clip(title, 40);
     }
     return [...this.files.values()].map((r) => r.session).filter((s) => s.lastTs);
   }

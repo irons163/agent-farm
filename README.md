@@ -135,25 +135,6 @@ requests.post("http://127.0.0.1:5180/api/report", json={
 - **看不到我的 agent**：右上角「?」會列出每個平台有沒有偵測到。超過 12 小時沒動作的工作階段不會顯示。
 - **OpenCode 顯示需要更新 Node**：讀 OpenCode 的資料庫要 Node.js 22.13 以上。
 
-## 重新算圖（選用）
-
-所有場景、動物和作物都是程式產生的（`blender/`），需要 Blender 5.2：
-
-```bash
-npm run render           # 正式品質：背景、日夜、風車、12 種動物 × 26 張、6 種作物 × 3 個階段
-npm run render:preview   # 快速預覽
-```
-
-`blender` 指令要在 PATH 裡（macOS 上是 `/Applications/Blender.app/Contents/MacOS/Blender`）。輸出到 `web/assets/` 和 `scene.json`（投影矩陣、區域座標、精靈錨點）。
-
-## 架構
-
-- `server/`：零依賴的 Node 伺服器。各平台的 collector 讀紀錄 → `Session` 推導狀態 → 用 SSE（`/api/stream`）推給網頁。
-- `web/`：原生 JS。Blender 背景加上依深度排序的精靈、尋路、縮放平移、日夜、繁中／英文、手機版。
-- `macos/`：用 Swift 寫的原生 App，把伺服器和 `WKWebView` 包在一起，內建 Node binary 不用另外安裝。`npm run build:mac` 會打包出 Apple Silicon 和 Intel 的公證 DMG。
-- `blender/`：場景、動物、作物的產生和算圖腳本。
-- `hooks/`、`bin/`：Claude Code hook 和回報指令。
-
 ## 授權
 
 [MIT](LICENSE)

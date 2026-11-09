@@ -16,9 +16,9 @@
 
 | 版本 | 下載 |
 | --- | --- |
-| Apple Silicon（M 系列） | [AgentFarm-1.0.0-macOS-AppleSilicon.dmg](https://github.com/irons163/agent-farm/releases/latest/download/AgentFarm-1.0.0-macOS-AppleSilicon.dmg) |
-| Intel | [AgentFarm-1.0.0-macOS-Intel.dmg](https://github.com/irons163/agent-farm/releases/latest/download/AgentFarm-1.0.0-macOS-Intel.dmg) |
-| Windows 10/11（64 位元） | [AgentFarm-1.0.0-Windows-x64-setup.exe](https://github.com/irons163/agent-farm/releases/latest/download/AgentFarm-1.0.0-Windows-x64-setup.exe) |
+| Apple Silicon（M 系列） | [AgentFarm-1.1.0-macOS-AppleSilicon.dmg](https://github.com/irons163/agent-farm/releases/latest/download/AgentFarm-1.1.0-macOS-AppleSilicon.dmg) |
+| Intel | [AgentFarm-1.1.0-macOS-Intel.dmg](https://github.com/irons163/agent-farm/releases/latest/download/AgentFarm-1.1.0-macOS-Intel.dmg) |
+| Windows 10/11（64 位元） | [AgentFarm-1.1.0-Windows-x64-setup.exe](https://github.com/irons163/agent-farm/releases/latest/download/AgentFarm-1.1.0-Windows-x64-setup.exe) |
 | Linux（x64：`.AppImage` 或 `.deb`；arm64：`.AppImage`） | [最新發行版](https://github.com/irons163/agent-farm/releases/latest) |
 
 打開 DMG，把 Agent Farm 拖進 Applications，就這樣。不用安裝 Node.js，不用開終端機。

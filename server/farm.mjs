@@ -93,7 +93,7 @@ export class Farm {
     this.lastLists = new Map();  // collector -> sessions from its last finished poll
     this.push = new Map();
     this.demo = null;
-    this.demoMode = process.env.FARM_DEMO || 'auto'; // auto | on | off
+    this.demoMode = process.env.FARM_DEMO || 'off'; // auto | on | off
     this.showTemp = true;
     this.animalOf = new Map();
     this.plotOf = new Map();

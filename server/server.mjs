@@ -2,7 +2,7 @@
 // Agent Farm server: serves the web app and streams live agent status (SSE).
 //   node server/server.mjs            -> http://127.0.0.1:5180
 // Env: PORT, HOST, FARM_TOKEN (required when HOST is not loopback; open the farm once
-//      with /?token=<FARM_TOKEN> to get a cookie), FARM_DEMO=auto|on|off,
+//      with /?token=<FARM_TOKEN> to get a cookie), FARM_DEMO=on|off (default off),
 //      FARM_WINDOW_HOURS, FARM_SLEEP_MIN, FARM_COLLECTORS, FARM_DATA_DIR
 //      FARM_APP=1 is set by the macOS app (bundled Node; exits when the app goes away)
 import crypto from 'node:crypto';

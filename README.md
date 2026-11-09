@@ -37,7 +37,7 @@ npm start
 
 打開 <http://127.0.0.1:5180>。電腦上最近 12 小時用過的 agent 會自己出現。
 
-還沒有 agent 在跑也沒關係：沒偵測到正在工作的 agent 時會自動放示範動物。也可以直接看示範：
+還沒有 agent 在跑也沒關係，可以先看示範：
 
 ```bash
 npm run demo
@@ -103,7 +103,7 @@ requests.post("http://127.0.0.1:5180/api/report", json={
 | 參數 | 環境變數 | 預設 | 說明 |
 | --- | --- | --- | --- |
 | `--port 5181` | `PORT` | `5180` | 連接埠 |
-| `--demo` | `FARM_DEMO=on` | `auto` | 強制示範模式（`auto` 是沒 agent 在工作時才放示範動物） |
+| `--demo` | `FARM_DEMO=on` | `off` | 顯示示範動物 |
 | `--host 0.0.0.0` | `HOST` | `127.0.0.1` | 開放給其他裝置，需要搭配權杖，見「安全性」 |
 | `--token …` | `FARM_TOKEN` | 無 | 權杖 |
 | | `FARM_WINDOW_HOURS` | `12` | 超過幾小時沒動作就不顯示 |

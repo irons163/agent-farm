@@ -37,7 +37,7 @@ npm start
 
 Open <http://127.0.0.1:5180>. Agents you used in the last 12 hours show up on their own.
 
-No agents running? Demo animals appear automatically when nothing is working, or run:
+No agents running yet? Try the demo:
 
 ```bash
 npm run demo
@@ -101,7 +101,7 @@ Status already comes from the transcripts. Hooks make states like "waiting for p
 | Flag | Env var | Default | What it does |
 | --- | --- | --- | --- |
 | `--port 5181` | `PORT` | `5180` | Port |
-| `--demo` | `FARM_DEMO=on` | `auto` | Force demo mode (`auto` shows demo animals only when nothing is working) |
+| `--demo` | `FARM_DEMO=on` | `off` | Show demo animals |
 | `--host 0.0.0.0` | `HOST` | `127.0.0.1` | Open to other devices; needs a token, see Security |
 | `--token …` | `FARM_TOKEN` | none | Access token |
 | | `FARM_WINDOW_HOURS` | `12` | Hide sessions idle for longer than this |

@@ -1,6 +1,7 @@
 // Cursor Agent, Gemini CLI, Google Antigravity, OpenCode and Ollama collectors.
 import fsp from 'node:fs/promises';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { Session, CFG, clip } from '../session.mjs';
 import { HOME, JsonlTail, listDir, statSafe, ts, toolDetail, textOf, resolveSlug,
          stripTags } from '../util.mjs';
@@ -191,6 +192,32 @@ export class AntigravityCollector {
     this.root = path.join(HOME, '.gemini', 'antigravity');
     this.sessions = new Map();
     this.found = false;
+    this.summaries = new Map();  // conversation id -> { title, workspace }
+    this.summariesMtime = 0;
+  }
+
+  /** The app's own conversation list: a title and the workspace folder of every conversation. */
+  async loadSummaries() {
+    const file = path.join(this.root, 'conversation_summaries.db');
+    const st = await statSafe(file);
+    if (!st || st.mtimeMs === this.summariesMtime) return;
+    let db;
+    try {
+      const { DatabaseSync } = await import('node:sqlite');
+      db = new DatabaseSync(file, { readOnly: true });
+      const map = new Map();
+      for (const r of db.prepare('SELECT conversation_id, title, workspace_uris FROM conversation_summaries').all()) {
+        let workspace = '';
+        try { workspace = fileURLToPath(JSON.parse(r.workspace_uris)[0]); } catch { /* none or not a file: URI */ }
+        map.set(r.conversation_id, { title: String(r.title || ''), workspace });
+      }
+      this.summaries = map;
+      this.summariesMtime = st.mtimeMs;
+    } catch {
+      /* no node:sqlite (Node < 22.5) or the file is locked: keep the names we have */
+    } finally {
+      try { db?.close(); } catch { /* ignore */ }
+    }
   }
 
   info() {
@@ -201,6 +228,7 @@ export class AntigravityCollector {
     const conv = path.join(this.root, 'conversations');
     const ents = await listDir(conv);
     this.found = ents.length > 0;
+    await this.loadSummaries();
     const seen = new Set();
     for (const e of ents) {
       const m = e.name.match(/^([0-9a-f-]{36})\.(db|pb)$/);
@@ -245,8 +273,12 @@ export class AntigravityCollector {
       s.pending.clear();
       s.lastKind = age < 180e3 ? 'thinking' : 'done';
       if (age < 45e3) s.pending.set('ag', { name: 'Antigravity', detail: s.extra.current || s.title, ts: mt });
+      const sum = this.summaries.get(id);
+      if (sum?.title && !s.title) s.title = clip(sum.title, 80);
+      if (sum?.workspace) s.project = sum.workspace;
       if (!s.project) s.project = s.title ? '' : id.slice(0, 8);
-      s.name = 'Antigravity';
+      // named after its workspace folder like every other platform; "Antigravity" only if unknown
+      s.name = sum?.workspace ? '' : 'Antigravity';
     }
     for (const id of [...this.sessions.keys()]) if (!seen.has(id)) this.sessions.delete(id);
     return [...this.sessions.values()];

@@ -3,7 +3,9 @@ name: Desktop apps (Windows & Linux)
 # Builds the Electron apps in desktop/. The macOS app is built locally (macos/build.sh) because it is
 # signed and notarized with a personal Developer ID.
 #   - Run it by hand from the Actions tab to get the installers as downloadable artifacts.
-#   - Push a tag like v1.0.0 and the installers are attached to that tag's GitHub release too.
+#   - Push a tag like v1.0.0 and the installers are attached to a DRAFT release for that tag. Add the
+#     macOS DMGs, check that every download is there, then publish it by hand (a draft never becomes
+#     "latest", so nobody sees a release with missing files).
 on:
   workflow_dispatch:
   push:
@@ -81,5 +83,5 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh release view "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1 ||
-            gh release create "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --title "$GITHUB_REF_NAME" --notes ""
+            gh release create "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --title "$GITHUB_REF_NAME" --notes "" --draft
           gh release upload "$GITHUB_REF_NAME" installers/* --repo "$GITHUB_REPOSITORY" --clobber

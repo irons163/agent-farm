@@ -12,6 +12,19 @@
 - **只在你的電腦上跑**：唯讀各平台的本機紀錄，不上傳任何東西。
 - 白天／夜晚、繁中／English、手機版、需要你回覆時跳桌面通知。
 
+## 下載（macOS）
+
+| 版本 | 下載 |
+| --- | --- |
+| Apple Silicon（M 系列） | [AgentFarm-1.0.0-macOS-AppleSilicon.dmg](https://github.com/irons163/agent-farm/releases/latest/download/AgentFarm-1.0.0-macOS-AppleSilicon.dmg) |
+| Intel | [AgentFarm-1.0.0-macOS-Intel.dmg](https://github.com/irons163/agent-farm/releases/latest/download/AgentFarm-1.0.0-macOS-Intel.dmg) |
+
+打開 DMG，把 Agent Farm 拖進 Applications，就這樣。不用安裝 Node.js，不用開終端機。
+
+App 會自動在背景跑伺服器、開視窗。關掉視窗之後繼續跑在選單列（右上角圖示）；有 agent 在等你回覆時會跳原生通知。
+
+也可以從原始碼跑：
+
 ## 快速開始
 
 需要 [Node.js](https://nodejs.org) 20 以上（要看 OpenCode 的話需要 22.13 以上）。
@@ -137,6 +150,7 @@ npm run render:preview   # 快速預覽
 
 - `server/`：零依賴的 Node 伺服器。各平台的 collector 讀紀錄 → `Session` 推導狀態 → 用 SSE（`/api/stream`）推給網頁。
 - `web/`：原生 JS。Blender 背景加上依深度排序的精靈、尋路、縮放平移、日夜、繁中／英文、手機版。
+- `macos/`：用 Swift 寫的原生 App，把伺服器和 `WKWebView` 包在一起，內建 Node binary 不用另外安裝。`npm run build:mac` 會打包出 Apple Silicon 和 Intel 的公證 DMG。
 - `blender/`：場景、動物、作物的產生和算圖腳本。
 - `hooks/`、`bin/`：Claude Code hook 和回報指令。
 

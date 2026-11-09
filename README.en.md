@@ -12,6 +12,19 @@ A **Blender-rendered** 2.5D isometric farm where every AI agent on your computer
 - **Stays on your machine**: it only reads local session logs and uploads nothing.
 - Day/night, English/繁體中文, mobile layout, desktop notifications when an agent needs you.
 
+## Download (macOS)
+
+| Build | Download |
+| --- | --- |
+| Apple Silicon (M-series) | [AgentFarm-1.0.0-macOS-AppleSilicon.dmg](https://github.com/irons163/agent-farm/releases/latest/download/AgentFarm-1.0.0-macOS-AppleSilicon.dmg) |
+| Intel | [AgentFarm-1.0.0-macOS-Intel.dmg](https://github.com/irons163/agent-farm/releases/latest/download/AgentFarm-1.0.0-macOS-Intel.dmg) |
+
+Open the DMG, drag Agent Farm to Applications, done. No Node.js to install, no terminal to open.
+
+The app runs the server in the background and opens a window. Close the window and it keeps running in the menu bar (top-right icon); you get a native notification when an agent needs your attention.
+
+Or run from source:
+
 ## Quick start
 
 Needs [Node.js](https://nodejs.org) 20 or newer (22.13+ to see OpenCode).
@@ -137,6 +150,7 @@ npm run render:preview   # quick preview
 - `web/`: vanilla JS. Blender background plus depth-sorted sprites, pathfinding, pan/zoom, day/night, English/繁體中文, mobile layout.
 - `blender/`: scripts that build and render the scene, animals and crops.
 - `hooks/`, `bin/`: the Claude Code hook and the report CLI.
+- `macos/`: native Swift app wrapping the server and a `WKWebView`. Bundles its own Node binary so there is nothing to install. `npm run build:mac` produces notarized DMGs for Apple Silicon and Intel.
 
 ## License
 

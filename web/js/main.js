@@ -29,6 +29,9 @@ let filter = 'all';
 let chipFilter = null;
 // ?theme=day|night and ?lang=en|zh override the saved choice for this page (handy for sharing links)
 const QS = new URLSearchParams(location.search);
+// inside the macOS app: native notifications and the menu-bar count go through this bridge
+const NATIVE = window.webkit?.messageHandlers?.farm;
+const toNative = (msg) => { try { NATIVE?.postMessage(msg); } catch { /* app gone */ } };
 let themePref = ['auto', 'day', 'night'].includes(QS.get('theme')) ? QS.get('theme') : store.get('farm.theme', 'auto');
 let firstState = true;
 const prev = new Map();
@@ -96,6 +99,8 @@ function onState(s) {
   renderPanel();
   renderLegend();
   const need = agents.filter((a) => a.status === 'waiting').length;
+  toNative({ type: 'status', waiting: need, working: agents.filter((a) => a.status === 'working').length,
+    total: agents.filter((a) => !a.demo).length });
   document.title = `${need ? `(${need}) ` : ''}Agent Farm · ${t('subtitle')}`;
   if (selected && !agents.some((a) => a.id === selected)) selectAgent(null);
   if ($('#help').open) renderHelp();
@@ -341,7 +346,8 @@ function toast(a, text, important) {
     el.classList.add('out');
     setTimeout(() => el.remove(), 400);
   }, important ? 7000 : 4000);
-  if (important && document.hidden && 'Notification' in window && Notification.permission === 'granted') {
+  if (important && NATIVE) toNative({ type: 'notify', id: a.id, body: text });
+  else if (important && document.hidden && 'Notification' in window && Notification.permission === 'granted') {
     try {
       new Notification('Agent Farm', { body: text, icon: avatarSrc(a), tag: a.id });
     } catch { /* ignore */ }
@@ -358,7 +364,9 @@ function renderHelp() {
   }).join('');
   const hook = state.config?.hookPath || '/path/to/agent-farm/hooks/claude-hook.mjs';
   const defaultFarm = /^http:\/\/(127\.0\.0\.1|localhost):5180$/.test(origin);
-  const hookCmd = { type: 'command', command: `node "${hook}"${defaultFarm ? '' : ` --url ${origin}`}`, timeout: 5 };
+  const node = state.config?.node && state.config.node !== 'node' ? `"${state.config.node}"` : 'node';
+  const report = state.config?.app ? `"${state.config.reportPath}"` : 'bin/farm-report.mjs';
+  const hookCmd = { type: 'command', command: `${node} "${hook}"${defaultFarm ? '' : ` --url ${origin}`}`, timeout: 5 };
   const hooksJson = JSON.stringify({
     hooks: Object.fromEntries(['UserPromptSubmit', 'PreToolUse', 'PostToolUse', 'Notification', 'Stop', 'SessionStart', 'SessionEnd']
       .map((ev) => [ev, [/ToolUse/.test(ev) ? { matcher: '*', hooks: [hookCmd] } : { hooks: [hookCmd] }]])),
@@ -374,7 +382,7 @@ function renderHelp() {
        "status":"working","tool":"search","detail":"order #1932"}'
 
 # status: working | thinking | waiting | error | idle | sleeping | offline
-node bin/farm-report.mjs --id researcher --platform deepseek --status thinking</pre>
+${esc(`${node} ${report}`)} --id researcher --platform deepseek --status thinking</pre>
 <pre class="code">import requests  # Python
 requests.post("${origin}/api/report", json={
     "id": "researcher", "platform": "deepseek", "status": "working",
@@ -385,7 +393,7 @@ requests.post("${origin}/api/report", json={
       <span class="hint">${esc(t('temp_now', { n: state.settings?.tempCount || 0 }))}</span></div>
     <h3>${t('help_demo')}</h3><p>${t('help_demo_p')}</p>
     <div class="modes">${['auto', 'on', 'off'].map((m) => `<button type="button" data-demo="${m}" class="${m === mode ? 'on' : ''}">${t(`mode_${m}`)}</button>`).join('')}
-      ${'Notification' in window && Notification.permission === 'default' ? `<button type="button" id="btn-notify">🔔 ${getLang() === 'zh' ? '啟用桌面通知' : 'Enable notifications'}</button>` : ''}</div>`;
+      ${!NATIVE && 'Notification' in window && Notification.permission === 'default' ? `<button type="button" id="btn-notify">🔔 ${getLang() === 'zh' ? '啟用桌面通知' : 'Enable notifications'}</button>` : ''}</div>`;
 }
 
 async function setDemo(mode) {
@@ -525,4 +533,6 @@ function bindUi() {
   });
 }
 
+// the app calls this when you click one of its notifications
+if (NATIVE) window.farmSelect = (id) => selectAgent(id);
 boot();

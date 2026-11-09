@@ -179,6 +179,15 @@ export function textOf(content) {
   return '';
 }
 
+// In the macOS app, looking inside these folders makes macOS ask the user for permission
+// ("Agent Farm would like to access files in your Documents folder"), so don't probe there:
+// guess the rest of the path instead. From a terminal the terminal already has access.
+const PROTECTED = process.platform === 'darwin' && process.env.FARM_APP === '1'
+  ? ['Desktop', 'Documents', 'Downloads', 'Pictures', 'Movies', 'Music', 'Library/Mobile Documents',
+      'Library/CloudStorage'].map((d) => path.join(HOME, d)).concat('/Volumes')
+  : [];
+const isProtected = (dir) => PROTECTED.some((p) => dir === p || dir.startsWith(p + '/'));
+
 /** Turn a dash-flattened path slug (e.g. "Volumes-M2SSD-Documents-My-App") back into a real path. */
 const slugCache = new Map();
 export function resolveSlug(slug) {
@@ -188,6 +197,10 @@ export function resolveSlug(slug) {
   const walk = (dir, i) => {
     if (i >= parts.length) {
       best = dir;
+      return true;
+    }
+    if (isProtected(dir)) {
+      best = path.join(dir, parts.slice(i).join('-'));
       return true;
     }
     for (let j = parts.length; j > i; j--) {

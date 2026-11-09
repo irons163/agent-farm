@@ -3,7 +3,8 @@
 //   node server/server.mjs            -> http://127.0.0.1:5180
 // Env: PORT, HOST, FARM_TOKEN (required when HOST is not loopback; open the farm once
 //      with /?token=<FARM_TOKEN> to get a cookie), FARM_DEMO=auto|on|off,
-//      FARM_WINDOW_HOURS, FARM_SLEEP_MIN, FARM_COLLECTORS
+//      FARM_WINDOW_HOURS, FARM_SLEEP_MIN, FARM_COLLECTORS, FARM_DATA_DIR
+//      FARM_APP=1 is set by the macOS app (bundled Node; exits when the app goes away)
 import crypto from 'node:crypto';
 import http from 'node:http';
 import fs from 'node:fs';
@@ -59,7 +60,10 @@ if (!LOOPBACK && !TOKEN) {
   process.exit(1);
 }
 
-const farm = new Farm({ dataDir: path.resolve(HERE, '..', 'data') });
+const farm = new Farm({ dataDir: process.env.FARM_DATA_DIR || path.resolve(HERE, '..', 'data') });
+
+// launched by the macOS app: if the app dies without stopping us, we get re-parented to launchd
+if (process.env.FARM_APP === '1') setInterval(() => { if (process.ppid === 1) process.exit(0); }, 2000).unref();
 
 const MIME = {
   '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8',

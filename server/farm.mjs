@@ -3,12 +3,18 @@
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { Session, CFG, clip } from './session.mjs';
 import { ClaudeCollector } from './collectors/claude.mjs';
 import { CodexCollector } from './collectors/codex.mjs';
 import { CursorCollector, GeminiCollector, AntigravityCollector, OpenCodeCollector,
          OllamaCollector } from './collectors/others.mjs';
 import { Demo } from './demo.mjs';
+
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const IN_APP = process.env.FARM_APP === '1';
+// commands shown in the help dialog: the macOS app has its own Node, so give full paths there
+const NODE_CMD = IN_APP ? process.execPath : 'node';
 
 export const ANIMALS = ['fox', 'cat', 'rabbit', 'owl', 'cow', 'pig', 'sheep', 'hen', 'duck', 'corgi',
   'goat', 'pony'];
@@ -83,6 +89,8 @@ export class Farm {
       const allow = new Set(process.env.FARM_COLLECTORS.split(',').map((s) => s.trim()));
       this.collectors = this.collectors.filter((c) => allow.has(c.platform));
     }
+    this.polls = new Map();      // collector -> poll still running
+    this.lastLists = new Map();  // collector -> sessions from its last finished poll
     this.push = new Map();
     this.demo = null;
     this.demoMode = process.env.FARM_DEMO || 'auto'; // auto | on | off
@@ -192,14 +200,22 @@ export class Farm {
   async tick() {
     const now = Date.now();
     const real = [];
+    // A platform whose files are slow or blocked (a network drive, or macOS waiting on a permission
+    // prompt for an external disk) must not freeze the whole farm: show its last result meanwhile.
     await Promise.all(this.collectors.map(async (c) => {
-      try {
-        const list = await c.poll(now);
-        real.push(...list);
-        delete this.errors[c.platform];
-      } catch (e) {
-        this.errors[c.platform] = String(e.message || e);
+      if (!this.polls.has(c)) {
+        this.polls.set(c, c.poll(now).then((list) => {
+          this.lastLists.set(c, list);
+          delete this.errors[c.platform];
+        }, (e) => {
+          this.lastLists.set(c, []);
+          this.errors[c.platform] = String(e.message || e);
+        }).finally(() => this.polls.delete(c)));
       }
+      let timer;
+      await Promise.race([this.polls.get(c), new Promise((r) => { timer = setTimeout(r, 3000); })]);
+      clearTimeout(timer);
+      real.push(...(this.lastLists.get(c) || []));
     }));
     real.push(...this.push.values());
     const visible = real.filter((s) => now - s.lastTs < CFG.windowMs);
@@ -242,7 +258,8 @@ export class Farm {
       demo: { mode: this.demoMode, active: demoOn },
       settings: { showTemp: this.showTemp, tempCount: tempTotal, oneShotMin: ONE_SHOT_TTL / 60e3 },
       config: { sleepAfterMin: CFG.sleepAfterMs / 60e3, windowHours: CFG.windowMs / 3600e3, maxOnFarm: MAX_ON_FARM,
-        hookPath: path.resolve(this.dataDir, '..', 'hooks', 'claude-hook.mjs') },
+        hookPath: path.join(ROOT, 'hooks', 'claude-hook.mjs'), node: NODE_CMD, app: IN_APP,
+        reportPath: IN_APP ? path.join(ROOT, 'bin', 'farm-report.mjs') : 'bin/farm-report.mjs' },
     };
     return this.snapshot;
   }

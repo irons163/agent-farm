@@ -12,6 +12,8 @@ import { CursorCollector, GeminiCollector, AntigravityCollector, OpenCodeCollect
 import { Demo } from './demo.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+let VERSION = '';
+try { VERSION = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8')).version || ''; } catch { /* unknown */ }
 const IN_APP = process.env.FARM_APP === '1';
 // commands shown in the help dialog: the macOS app has its own Node, so give full paths there
 const NODE_CMD = IN_APP ? process.execPath : 'node';
@@ -257,7 +259,7 @@ export class Farm {
       collectors: this.collectors.map((c) => ({ ...c.info(), error: this.errors[c.platform] || c.error || undefined })),
       demo: { mode: this.demoMode, active: demoOn },
       settings: { showTemp: this.showTemp, tempCount: tempTotal, oneShotMin: ONE_SHOT_TTL / 60e3 },
-      config: { sleepAfterMin: CFG.sleepAfterMs / 60e3, windowHours: CFG.windowMs / 3600e3, maxOnFarm: MAX_ON_FARM,
+      config: { version: VERSION, sleepAfterMin: CFG.sleepAfterMs / 60e3, windowHours: CFG.windowMs / 3600e3, maxOnFarm: MAX_ON_FARM,
         hookPath: path.join(ROOT, 'hooks', 'claude-hook.mjs'), node: NODE_CMD, app: IN_APP,
         reportPath: IN_APP ? path.join(ROOT, 'bin', 'farm-report.mjs') : 'bin/farm-report.mjs' },
     };

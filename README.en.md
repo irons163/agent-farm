@@ -12,16 +12,20 @@ A **Blender-rendered** 2.5D isometric farm where every AI agent on your computer
 - **Stays on your machine**: it only reads local session logs and uploads nothing.
 - Day/night, English/繁體中文, mobile layout, desktop notifications when an agent needs you.
 
-## Download (macOS)
+## Download
 
 | Build | Download |
 | --- | --- |
 | Apple Silicon (M-series) | [AgentFarm-1.0.0-macOS-AppleSilicon.dmg](https://github.com/irons163/agent-farm/releases/latest/download/AgentFarm-1.0.0-macOS-AppleSilicon.dmg) |
 | Intel | [AgentFarm-1.0.0-macOS-Intel.dmg](https://github.com/irons163/agent-farm/releases/latest/download/AgentFarm-1.0.0-macOS-Intel.dmg) |
+| Windows 10/11 (64-bit) | [AgentFarm-1.0.0-Windows-x64-setup.exe](https://github.com/irons163/agent-farm/releases/latest/download/AgentFarm-1.0.0-Windows-x64-setup.exe) |
+| Linux (x64: `.AppImage` or `.deb`; arm64: `.AppImage`) | [latest release](https://github.com/irons163/agent-farm/releases/latest) |
 
 Open the DMG, drag Agent Farm to Applications, done. No Node.js to install, no terminal to open.
 
 The app runs the server in the background and opens a window. Close the window and it keeps running in the menu bar (top-right icon); you get a native notification when an agent needs your attention.
+
+**Windows / Linux:** the same, with a tray icon instead of the menu bar. The Windows installer is not code-signed yet, so SmartScreen says "Windows protected your PC": click **More info → Run anyway**. On Linux, make the AppImage executable (`chmod +x`) or install the `.deb`. GNOME has no tray by default; install the AppIndicator extension to see the icon (without it, start the app again to bring the window back).
 
 Or run from source:
 
@@ -118,7 +122,7 @@ Put flags after `--`, e.g. `npm start -- --port 5181`; this works on Windows too
 The farm shows prompt snippets, project paths and session IDs, so:
 
 - It listens on `127.0.0.1` only and accepts only loopback host names (blocks DNS rebinding). Writes from a browser must come from the farm's own page, so other websites and other local pages can't change anything.
-- Platform logs are only read, never written or uploaded. The only outside request is Google Fonts.
+- Platform logs are only read, never written or uploaded. The only outside request is Google Fonts. The app does not check for updates by itself either: use “Check for updates” in the help panel or the tray menu to open the releases page.
 - To watch from your phone or another computer, you must set a token or the server won't start:
 
   ```bash

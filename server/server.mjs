@@ -4,7 +4,8 @@
 // Env: PORT, HOST, FARM_TOKEN (required when HOST is not loopback; open the farm once
 //      with /?token=<FARM_TOKEN> to get a cookie), FARM_DEMO=on|off (default off),
 //      FARM_WINDOW_HOURS, FARM_SLEEP_MIN, FARM_COLLECTORS, FARM_DATA_DIR
-//      FARM_APP=1 is set by the macOS app (bundled Node; exits when the app goes away)
+//      FARM_APP=1 is set by the desktop apps (bundled Node; exits when the app goes away),
+//      FARM_PARENT_PID: the Windows/Linux app's pid, so we exit if it dies without stopping us
 import crypto from 'node:crypto';
 import http from 'node:http';
 import fs from 'node:fs';
@@ -64,6 +65,13 @@ const farm = new Farm({ dataDir: process.env.FARM_DATA_DIR || path.resolve(HERE,
 
 // launched by the macOS app: if the app dies without stopping us, we get re-parented to launchd
 if (process.env.FARM_APP === '1') setInterval(() => { if (process.ppid === 1) process.exit(0); }, 2000).unref();
+// the Windows/Linux app: no re-parenting to pid 1 there, so watch the app's pid instead
+const PARENT = Number(process.env.FARM_PARENT_PID || 0);
+if (PARENT) {
+  setInterval(() => {
+    try { process.kill(PARENT, 0); } catch (e) { if (e.code === 'ESRCH') process.exit(0); }
+  }, 2000).unref();
+}
 
 const MIME = {
   '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8',

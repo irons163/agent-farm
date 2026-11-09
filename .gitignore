@@ -19,3 +19,6 @@ __pycache__/
 .claude/settings.local.json
 /dist/
 /macos/.cache/
+
+# desktop (Windows/Linux) build cache
+/desktop/.cache/

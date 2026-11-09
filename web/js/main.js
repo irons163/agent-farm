@@ -29,8 +29,9 @@ let filter = 'all';
 let chipFilter = null;
 // ?theme=day|night and ?lang=en|zh override the saved choice for this page (handy for sharing links)
 const QS = new URLSearchParams(location.search);
-// inside the macOS app: native notifications and the menu-bar count go through this bridge
-const NATIVE = window.webkit?.messageHandlers?.farm;
+// inside the desktop apps: native notifications and the tray/menu-bar count go through this bridge
+// (macOS: WKWebView message handler; Windows/Linux: Electron preload's window.farmNative)
+const NATIVE = window.webkit?.messageHandlers?.farm || window.farmNative;
 const toNative = (msg) => { try { NATIVE?.postMessage(msg); } catch { /* app gone */ } };
 let themePref = ['auto', 'day', 'night'].includes(QS.get('theme')) ? QS.get('theme') : store.get('farm.theme', 'auto');
 let firstState = true;
@@ -393,7 +394,9 @@ requests.post("${origin}/api/report", json={
       <span class="hint">${esc(t('temp_now', { n: state.settings?.tempCount || 0 }))}</span></div>
     <h3>${t('help_demo')}</h3><p>${t('help_demo_p')}</p>
     <div class="modes">${['auto', 'on', 'off'].map((m) => `<button type="button" data-demo="${m}" class="${m === mode ? 'on' : ''}">${t(`mode_${m}`)}</button>`).join('')}
-      ${!NATIVE && 'Notification' in window && Notification.permission === 'default' ? `<button type="button" id="btn-notify">🔔 ${getLang() === 'zh' ? '啟用桌面通知' : 'Enable notifications'}</button>` : ''}</div>`;
+      ${!NATIVE && 'Notification' in window && Notification.permission === 'default' ? `<button type="button" id="btn-notify">🔔 ${getLang() === 'zh' ? '啟用桌面通知' : 'Enable notifications'}</button>` : ''}</div>
+    <h3>${t('help_update')}${state.config?.version ? ` <small>· v${esc(state.config.version)}</small>` : ''}</h3><p>${t('help_update_p')}</p>
+    <p><a href="https://github.com/irons163/agent-farm/releases/latest" target="_blank" rel="noopener">${t('help_update')} →</a></p>`;
 }
 
 async function setDemo(mode) {

@@ -5,12 +5,24 @@
   "type": "module",
   "private": true,
   "license": "MIT",
-  "engines": { "node": ">=20" },
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "start": "node server/server.mjs",
     "demo": "node server/server.mjs --demo",
     "build:mac": "ARCH=arm64 bash macos/build.sh && ARCH=x64 bash macos/build.sh",
     "render": "blender -b --factory-startup -P blender/render_all.py -- --quality final",
-    "render:preview": "blender -b --factory-startup -P blender/render_all.py -- --quality preview"
+    "render:preview": "blender -b --factory-startup -P blender/render_all.py -- --quality preview",
+    "desktop": "electron .",
+    "build:win": "node desktop/fetch-node.mjs win32 x64 && electron-builder --config desktop/electron-builder.yml --win --x64 --publish never",
+    "build:linux": "node desktop/fetch-node.mjs linux ${ARCH:-x64} && electron-builder --config desktop/electron-builder.yml --linux --${ARCH:-x64} --publish never"
+  },
+  "main": "desktop/main.mjs",
+  "author": "irons163",
+  "homepage": "https://github.com/irons163/agent-farm",
+  "devDependencies": {
+    "electron": "^45.2.3",
+    "electron-builder": "^26.18.0"
   }
 }

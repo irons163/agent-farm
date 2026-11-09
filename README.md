@@ -12,16 +12,20 @@
 - **只在你的電腦上跑**：唯讀各平台的本機紀錄，不上傳任何東西。
 - 白天／夜晚、繁中／English、手機版、需要你回覆時跳桌面通知。
 
-## 下載（macOS）
+## 下載
 
 | 版本 | 下載 |
 | --- | --- |
 | Apple Silicon（M 系列） | [AgentFarm-1.0.0-macOS-AppleSilicon.dmg](https://github.com/irons163/agent-farm/releases/latest/download/AgentFarm-1.0.0-macOS-AppleSilicon.dmg) |
 | Intel | [AgentFarm-1.0.0-macOS-Intel.dmg](https://github.com/irons163/agent-farm/releases/latest/download/AgentFarm-1.0.0-macOS-Intel.dmg) |
+| Windows 10/11（64 位元） | [AgentFarm-1.0.0-Windows-x64-setup.exe](https://github.com/irons163/agent-farm/releases/latest/download/AgentFarm-1.0.0-Windows-x64-setup.exe) |
+| Linux（x64：`.AppImage` 或 `.deb`；arm64：`.AppImage`） | [最新發行版](https://github.com/irons163/agent-farm/releases/latest) |
 
 打開 DMG，把 Agent Farm 拖進 Applications，就這樣。不用安裝 Node.js，不用開終端機。
 
 App 會自動在背景跑伺服器、開視窗。關掉視窗之後繼續跑在選單列（右上角圖示）；有 agent 在等你回覆時會跳原生通知。
+
+**Windows / Linux：** 用法相同，只是常駐在系統匣而不是選單列。Windows 安裝檔目前還沒有程式碼簽章，SmartScreen 會顯示「Windows 已保護您的電腦」，請按**其他資訊 → 仍要執行**。Linux 的 AppImage 需要先 `chmod +x`，或直接安裝 `.deb`。GNOME 預設沒有系統匣，要裝 AppIndicator 擴充套件才看得到圖示（沒裝的話，再開一次 App 就能把視窗叫回來）。
 
 也可以從原始碼跑：
 
@@ -120,7 +124,7 @@ requests.post("http://127.0.0.1:5180/api/report", json={
 農場畫面會顯示你的提示詞片段、專案路徑和工作階段 ID，所以：
 
 - 預設只聽 `127.0.0.1`，而且只接受 `localhost`、`127.0.0.1` 這類主機名稱（擋 DNS rebinding）。瀏覽器送來的寫入請求必須來自農場自己的網址，其他網站和本機其他網頁都改不了。
-- 各平台的紀錄只讀不寫，不會上傳到任何地方。唯一會連外的是 Google Fonts 字型。
+- 各平台的紀錄只讀不寫，不會上傳到任何地方。唯一會連外的是 Google Fonts 字型。App 也不會自己檢查更新；想知道有沒有新版，請從說明頁或托盤選單的「檢查更新」開啟發行頁面。
 - 想在手機或區網其他電腦上看，一定要設權杖，否則伺服器不會啟動：
 
   ```bash

@@ -1,0 +1,37 @@
+# Windows and Linux builds. macOS has its own native app: see macos/build.sh.
+#   node desktop/fetch-node.mjs win32 x64 && npx electron-builder --config desktop/electron-builder.yml --win --x64
+appId: io.github.irons163.agentfarm
+productName: Agent Farm
+executableName: agent-farm
+# no asar: the farm server runs under a plain Node, which can't read inside an archive
+asar: false
+directories:
+  output: dist
+  buildResources: desktop
+files:
+  - desktop/main.mjs
+  - desktop/preload.cjs
+  - desktop/icon.png
+  - server/**
+  - web/**
+  - hooks/**
+  - bin/**
+  - package.json
+  - LICENSE
+extraResources:
+  - from: desktop/.cache/node
+    to: node
+icon: desktop/icon.png
+artifactName: AgentFarm-${version}-${os}-${arch}.${ext}
+win:
+  target: nsis
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  artifactName: AgentFarm-${version}-Windows-${arch}-setup.exe
+linux:
+  target: [AppImage, deb]
+  category: Utility
+  maintainer: irons163 <irons163@users.noreply.github.com>
+  synopsis: A farm where every AI agent is an animal showing its live status
+  artifactName: AgentFarm-${version}-Linux-${arch}.${ext}

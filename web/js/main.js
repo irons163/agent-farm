@@ -220,6 +220,11 @@ function renderPanel() {
     return;
   }
   box.querySelector('.empty')?.remove();
+  // The list is sorted by status and recency, so cards move whenever anything changes. Remember where
+  // the card being read sits (and how far its own activity list is scrolled) so it can stay put.
+  const readEl = selected ? cardEls.get(selected) : null;
+  const readTop = readEl?.isConnected ? readEl.getBoundingClientRect().top : null;
+  const readLog = readEl?.querySelector('.timeline')?.scrollTop || 0;
   const keep = new Set(list.map((a) => a.id));
   for (const [id, el] of cardEls) if (!keep.has(id)) {
     el.remove();
@@ -248,6 +253,14 @@ function renderPanel() {
     el.style.setProperty('--sc', `var(--${a.status})`);
     if (box.children[i] !== el) box.insertBefore(el, box.children[i] || null);
   });
+  const nowEl = selected ? cardEls.get(selected) : null;
+  if (nowEl && readTop !== null) {
+    // .cards has scroll-behavior: smooth; this correction must be instant or it would itself wobble
+    const drift = nowEl.getBoundingClientRect().top - readTop;
+    if (Math.abs(drift) > 0.5) box.scrollTo({ top: box.scrollTop + drift, behavior: 'instant' });
+    const log = nowEl.querySelector('.timeline');
+    if (log && readLog) log.scrollTop = readLog;  // the card's HTML was rebuilt, which resets it
+  }
 }
 
 function renderChips() {

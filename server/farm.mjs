@@ -109,7 +109,9 @@ export class Farm {
     try {
       const j = JSON.parse(fs.readFileSync(path.join(this.dataDir, 'farm-state.json'), 'utf8'));
       this.memory = j.animals || {};
-      if (j.demoMode && !process.env.FARM_DEMO) this.demoMode = j.demoMode;
+      // "auto" was the default before demos became opt-in (--demo); a saved "auto" is that old default,
+      // not a choice, so it must not switch demo animals back on. "on" and "off" were picked on purpose.
+      if ((j.demoMode === 'on' || j.demoMode === 'off') && !process.env.FARM_DEMO) this.demoMode = j.demoMode;
       if (typeof j.showTemp === 'boolean') this.showTemp = j.showTemp;
     } catch {
       /* first run */

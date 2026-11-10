@@ -12,8 +12,6 @@ const INDEX = path.join(path.dirname(ROOT), 'session_index.jsonl');
 // folder (…/2026-11-09/give-me-a-morning-brief-with): the folder name is a poor label
 const AUTO_DIR = /^\d{4}-\d{2}-\d{2}$/;
 
-const pad = (n) => String(n).padStart(2, '0');
-
 function argsDetail(name, raw) {
   if (!raw) return '';
   let a = raw;
@@ -69,11 +67,18 @@ export class CodexCollector {
   async scan(now) {
     await this.loadTitles();
     const root = await realDir(this.root);
+    // A resumed chat keeps appending to the rollout file of the day it was created, so a file
+    // inside the window can sit in any older date folder. Walk every date folder (cheap: one
+    // readdir each, stat only the .jsonl files).
     const days = [];
-    const span = Math.ceil(CFG.windowMs / 86400e3) + 1;
-    for (let k = 0; k <= span; k++) {
-      const d = new Date(now - k * 86400e3);
-      days.push(path.join(root, String(d.getFullYear()), pad(d.getMonth() + 1), pad(d.getDate())));
+    for (const y of await listDir(root)) {
+      if (!y.isDirectory()) continue;
+      for (const m of await listDir(path.join(root, y.name))) {
+        if (!m.isDirectory()) continue;
+        for (const d of await listDir(path.join(root, y.name, m.name))) {
+          if (d.isDirectory()) days.push(path.join(root, y.name, m.name, d.name));
+        }
+      }
     }
     const fresh = [];
     let any = false;

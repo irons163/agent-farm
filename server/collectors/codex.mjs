@@ -125,10 +125,13 @@ export class CodexCollector {
       if (!rec.session.lastTs) rec.session.lastTs = st.mtimeMs;
     }
     for (const { session: s } of this.files.values()) {
+      if (!s.extra.firstPrompt && s.prompt) s.extra.firstPrompt = s.prompt;  // stable: later prompts don't rename it
       const title = this.titles.get(s.extra.sessionId);
-      if (!title) continue;
-      s.extra.label = clip(title, 60);
-      if (AUTO_DIR.test(path.basename(path.dirname(s.project || '')))) s.name = clip(title, 40);
+      if (title) s.extra.label = clip(title, 60);
+      // an auto-made chat folder is named after the first prompt (often a URL): use the chat title,
+      // or the first prompt while Codex has not named the chat yet
+      const name = title || s.extra.firstPrompt;
+      if (name && AUTO_DIR.test(path.basename(path.dirname(s.project || '')))) s.name = clip(name, 40);
     }
     return [...this.files.values()].map((r) => r.session).filter((s) => s.lastTs);
   }

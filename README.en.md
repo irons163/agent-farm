@@ -16,9 +16,9 @@ A **Blender-rendered** 2.5D isometric farm where every AI agent on your computer
 
 | Build | Download |
 | --- | --- |
-| Apple Silicon (M-series) | [AgentFarm-1.1.2-macOS-AppleSilicon.dmg](https://github.com/irons163/agent-farm/releases/latest/download/AgentFarm-1.1.2-macOS-AppleSilicon.dmg) |
-| Intel | [AgentFarm-1.1.2-macOS-Intel.dmg](https://github.com/irons163/agent-farm/releases/latest/download/AgentFarm-1.1.2-macOS-Intel.dmg) |
-| Windows 10/11 (64-bit) | [AgentFarm-1.1.2-Windows-x64-setup.exe](https://github.com/irons163/agent-farm/releases/latest/download/AgentFarm-1.1.2-Windows-x64-setup.exe) |
+| Apple Silicon (M-series) | [AgentFarm-1.1.3-macOS-AppleSilicon.dmg](https://github.com/irons163/agent-farm/releases/latest/download/AgentFarm-1.1.3-macOS-AppleSilicon.dmg) |
+| Intel | [AgentFarm-1.1.3-macOS-Intel.dmg](https://github.com/irons163/agent-farm/releases/latest/download/AgentFarm-1.1.3-macOS-Intel.dmg) |
+| Windows 10/11 (64-bit) | [AgentFarm-1.1.3-Windows-x64-setup.exe](https://github.com/irons163/agent-farm/releases/latest/download/AgentFarm-1.1.3-Windows-x64-setup.exe) |
 | Linux (x64: `.AppImage` or `.deb`; arm64: `.AppImage`) | [latest release](https://github.com/irons163/agent-farm/releases/latest) |
 
 Open the DMG, drag Agent Farm to Applications, done. No Node.js to install, no terminal to open.

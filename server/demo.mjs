@@ -2,14 +2,14 @@
 import { Session } from './session.mjs';
 
 const CAST = [
-  { platform: 'claude-code', project: 'shop-frontend', model: 'claude-opus-5-5', task: '重構結帳流程並補上測試' },
+  { platform: 'claude-code', project: 'shop-frontend', model: 'claude-opus-5-5', task: 'Refactor the checkout flow and add tests' },
   { platform: 'codex', project: 'data-pipeline', model: 'gpt-6.1', task: 'Fix flaky ETL job and add retries' },
-  { platform: 'gemini-cli', project: 'docs-site', model: 'gemini-3-pro', task: '把文件翻成英文並更新截圖' },
+  { platform: 'gemini-cli', project: 'docs-site', model: 'gemini-3-pro', task: 'Translate the docs and update screenshots' },
   { platform: 'cursor', project: 'mobile-app', model: 'cursor-agent', task: 'Implement offline sync for notes' },
-  { platform: 'claude-code', project: 'infra', model: 'claude-sonnet-5-5', task: '升級 Terraform 模組並檢查 drift' },
+  { platform: 'claude-code', project: 'infra', model: 'claude-sonnet-5-5', task: 'Upgrade Terraform modules and check for drift' },
   { platform: 'opencode', project: 'cli-tool', model: 'qwen3-coder', task: 'Add shell completions' },
   { platform: 'ollama', project: 'local model', model: 'llama3.3:70b', task: 'Summarise meeting notes' },
-  { platform: 'openai', project: 'support-bot', model: 'gpt-6-mini', task: '回覆客服工單分類' },
+  { platform: 'openai', project: 'support-bot', model: 'gpt-6-mini', task: 'Classify and answer support tickets' },
   { platform: 'deepseek', project: 'ml-notebook', model: 'deepseek-v4', task: 'Tune the ranking model' },
 ];
 
@@ -20,7 +20,7 @@ const TOOLS = {
   cursor: [['Read', 'sync.ts'], ['Edit', 'sync.ts'], ['Shell', 'pnpm test sync'], ['Grep', 'IndexedDB']],
   opencode: [['read', 'main.go'], ['edit', 'completion.go'], ['bash', 'go test ./...']],
   ollama: [['generate', 'llama3.3:70b']],
-  openai: [['classify_ticket', '#4821'], ['lookup_order', 'A-1932'], ['draft_reply', '退款流程']],
+  openai: [['classify_ticket', '#4821'], ['lookup_order', 'A-1932'], ['draft_reply', 'refund flow']],
   deepseek: [['python', 'train.py --epochs 3'], ['read', 'metrics.csv'], ['python', 'eval.py']],
 };
 
@@ -52,7 +52,7 @@ export class Demo {
     this.sessions[6].next = Date.now() + 60e3;
     this.set(this.sessions[6], 'sleeping', null, '');
     this.sessions[3].phase = 'wait';
-    this.set(this.sessions[3], 'waiting', 'Edit', 'sync.ts — 需要你核准修改', 'permission');
+    this.set(this.sessions[3], 'waiting', 'Edit', 'sync.ts — needs your approval to edit', 'permission');
     this.sessions[3].next = Date.now() + 25e3;
   }
 
@@ -97,7 +97,7 @@ export class Demo {
           if (a.step <= 0) {
             const r = Math.random();
             if (r < 0.28) {
-              this.set(a, 'waiting', 'AskUserQuestion', pick(['要用哪個資料庫？', 'Ship it to staging?', '需要你核准 git push', 'Which API version should I target?']), 'question');
+              this.set(a, 'waiting', 'AskUserQuestion', pick(['Which database should I use?', 'Ship it to staging?', 'Approve git push?', 'Which API version should I target?']), 'question');
               a.phase = 'wait';
               a.next = now + rnd(20e3, 45e3);
             } else if (r < 0.36) {
@@ -105,7 +105,7 @@ export class Demo {
               a.phase = 'err';
               a.next = now + rnd(12e3, 20e3);
             } else {
-              this.set(a, 'idle', null, pick(['完成！所有測試通過 ✅', 'Done — opened a PR.', '已更新文件並重新建置', 'Finished. 3 files changed.']));
+              this.set(a, 'idle', null, pick(['Done — all tests pass ✅', 'Done — opened a PR.', 'Docs updated and rebuilt', 'Finished. 3 files changed.']));
               a.phase = Math.random() < 0.35 ? 'nap' : 'idle';
               a.next = now + (a.phase === 'nap' ? rnd(8e3, 14e3) : rnd(18e3, 40e3));
             }

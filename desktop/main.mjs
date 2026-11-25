@@ -7,11 +7,24 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { pickLang, langInfo } from '../web/js/langs.js';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '..');
-const zh = /^zh/i.test(app.getLocale());
-const L = (en, zhText) => (zh ? zhText : en);
+// Native strings (tray menu, error page) come from web/locales/<lang>.json, the same files the page uses.
+// The language is the first supported one in the system's list; English if none is.
+let strings = null;
+const T = (key, vars = {}) => {
+  if (!strings) {
+    const read = (c) => { try { return JSON.parse(fs.readFileSync(path.join(ROOT, 'web', 'locales', `${c}.json`), 'utf8')).native || {}; } catch { return {}; } };
+    let tags = [];
+    try { tags = app.getPreferredSystemLanguages(); } catch { /* old Electron */ }
+    strings = { ...read('en'), ...read(pickLang(tags.length ? tags : [app.getLocale()])) };
+  }
+  let s = strings[key] ?? key;
+  for (const [k, v] of Object.entries(vars)) s = s.replaceAll(`{${k}}`, v);
+  return s;
+};
 const WIN = process.platform === 'win32';
 
 let win = null;
@@ -69,7 +82,7 @@ function launchServer() {
   p.on('error', (e) => { lastError = String(e.message || e); });
   p.on('exit', (code) => {
     if (server === p) server = null;
-    if (!quitting) showError(L('The farm server stopped unexpectedly.', '農場伺服器意外停止了。'),
+    if (!quitting) showError(T('n_err_unexpected'),
       lastError || `exit code ${code}`);
   });
   server = p;
@@ -93,11 +106,11 @@ async function startFarm() {
         if (!server) return;  // the exit handler shows the error
         if ((await probe(p)) === true) { loadFarm(); return; }
       }
-      showError(L("The farm server didn't start in time.", '農場伺服器沒有在時間內啟動。'), lastError);
+      showError(T('n_err_timeout'), lastError);
       return;
     }
   }
-  showError(L('No free port to start the farm on.', '沒有可用的連接埠可以啟動農場。'));
+  showError(T('n_err_port'));
 }
 
 async function restartFarm() {
@@ -146,12 +159,13 @@ function showFarm() {
 
 function showError(message, detail = '') {
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-  const html = `<!doctype html><meta charset="utf-8"><style>
+  const li = langInfo(pickLang(app.getPreferredSystemLanguages?.() ?? []));
+  const html = `<!doctype html><html dir="${li[3] ? 'rtl' : 'ltr'}"><meta charset="utf-8"><style>
     body{font:15px system-ui,sans-serif;background:#1b2a1f;color:#f2efe2;display:grid;place-content:center;height:100vh;margin:0;text-align:center}
     p{max-width:520px;color:#c9d3c0;word-break:break-word} button{font:inherit;padding:8px 18px;border-radius:8px;border:0;background:#e9b44c;cursor:pointer}
   </style><h2>${esc(message)}</h2>${detail ? `<p>${esc(detail)}</p>` : ''}
-  <p>${esc(L('Log:', '記錄檔：'))} ${esc(path.join(app.getPath('logs'), 'server.log'))}</p>
-  <div><button onclick="farmShell.restart()">${esc(L('Try again', '再試一次'))}</button></div>`;
+  <p>${esc(T('n_log', { path: path.join(app.getPath('logs'), 'server.log') }))}</p>
+  <div><button onclick="farmShell.restart()">${esc(T('n_try_again'))}</button></div>`;
   win?.loadURL('data:text/html;charset=utf-8,' + encodeURIComponent(html));
   hiddenStart = false;
   win?.show();
@@ -180,24 +194,24 @@ function setAutostart(on) {
 }
 
 function statusText() {
-  if (waiting > 0) return L(`${waiting} waiting for you`, `${waiting} 個在等你`);
-  if (working > 0) return L(`${working} working`, `${working} 個工作中`);
-  return L('All quiet', '一切平靜');
+  if (waiting > 0) return T('n_waiting', { n: waiting });
+  if (working > 0) return T('n_working', { n: working });
+  return T('n_all_quiet');
 }
 
 function updateTray() {
   if (!tray) return;
   tray.setToolTip(`Agent Farm · ${statusText()}`);
   tray.setContextMenu(Menu.buildFromTemplate([
-    { label: L('Show Agent Farm', '顯示 Agent Farm'), click: showFarm },
+    { label: T('n_show_farm'), click: showFarm },
     { label: statusText(), enabled: false },
     { type: 'separator' },
-    { label: L('Open at login', '登入時自動開啟'), type: 'checkbox', checked: getAutostart(),
+    { label: T('n_login'), type: 'checkbox', checked: getAutostart(),
       click: (item) => setAutostart(item.checked) },
-    { label: L('Restart farm server', '重新啟動農場伺服器'), click: () => restartFarm() },
-    { label: L('Check for updates…', '檢查更新…'), click: () => shell.openExternal('https://github.com/irons163/agent-farm/releases/latest') },
+    { label: T('n_restart_server'), click: () => restartFarm() },
+    { label: T('n_updates'), click: () => shell.openExternal('https://github.com/irons163/agent-farm/releases/latest') },
     { type: 'separator' },
-    { label: L('Quit', '結束'), click: () => app.quit() },
+    { label: T('n_quit'), click: () => app.quit() },
   ]));
   if (process.platform === 'linux') app.setBadgeCount(waiting);
 }

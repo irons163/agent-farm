@@ -1,5 +1,5 @@
 import { World, TOOL_ICON, cropStage, prettyTool } from './world.js';
-import { t, setLang, getLang, applyStatic, ago, fmtNum } from './i18n.js';
+import { t, setLang, getLang, getLocale, initI18n, animalLabel, LANGS, applyStatic, ago, fmtNum } from './i18n.js';
 
 const $ = (s) => document.querySelector(s);
 const app = $('#app');
@@ -27,7 +27,7 @@ let state = { agents: [], platforms: {}, collectors: [], demo: {}, config: {} };
 let selected = null;
 let filter = 'all';
 let chipFilter = null;
-// ?theme=day|night and ?lang=en|zh override the saved choice for this page (handy for sharing links)
+// ?theme=day|night and ?lang=<code> (e.g. en, ja, zh-Hant) override the saved choice for this page (handy for sharing links)
 const QS = new URLSearchParams(location.search);
 // inside the desktop apps: native notifications and the tray/menu-bar count go through this bridge
 // (macOS: WKWebView message handler; Windows/Linux: Electron preload's window.farmNative)
@@ -41,8 +41,8 @@ const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '
 
 // ------------------------------------------------------------------ boot
 async function boot() {
-  setLang(getLang());
-  $('#btn-lang').textContent = getLang() === 'zh' ? 'EN' : '中';
+  await initI18n();
+  buildLangMenu();
   makeSky();
   try {
     manifest = await fetch('assets/scene.json', { cache: 'no-cache' }).then((r) => r.json());
@@ -113,8 +113,7 @@ function statusLabel(s) {
 }
 
 function animalName(a) {
-  const n = manifest.animals?.[a.animal]?.name;
-  return n ? (getLang() === 'zh' ? n.zh : n.en) : '';
+  return animalLabel(a.animal) || manifest.animals?.[a.animal]?.name?.en || '';
 }
 
 function avatarSrc(a) {
@@ -152,7 +151,7 @@ function spark(bins) {
 function fmtTime(ms) {
   if (!ms) return '—';
   const d = new Date(ms);
-  return d.toLocaleTimeString(getLang() === 'zh' ? 'zh-TW' : 'en-US', { hour: '2-digit', minute: '2-digit' });
+  return d.toLocaleTimeString(getLocale(), { hour: '2-digit', minute: '2-digit' });
 }
 
 function detailHtml(a) {
@@ -407,7 +406,7 @@ requests.post("${origin}/api/report", json={
       <span class="hint">${esc(t('temp_now', { n: state.settings?.tempCount || 0 }))}</span></div>
     <h3>${t('help_demo')}</h3><p>${t('help_demo_p')}</p>
     <div class="modes">${['auto', 'on', 'off'].map((m) => `<button type="button" data-demo="${m}" class="${m === mode ? 'on' : ''}">${t(`mode_${m}`)}</button>`).join('')}
-      ${!NATIVE && 'Notification' in window && Notification.permission === 'default' ? `<button type="button" id="btn-notify">🔔 ${getLang() === 'zh' ? '啟用桌面通知' : 'Enable notifications'}</button>` : ''}</div>
+      ${!NATIVE && 'Notification' in window && Notification.permission === 'default' ? `<button type="button" id="btn-notify">🔔 ${esc(t('notify_enable'))}</button>` : ''}</div>
     <h3>${t('help_update')}${state.config?.version ? ` <small>· v${esc(state.config.version)}</small>` : ''}</h3><p>${t('help_update_p')}</p>
     <p><a href="https://github.com/irons163/agent-farm/releases/latest" target="_blank" rel="noopener">${t('help_update')} →</a></p>`;
 }
@@ -436,7 +435,7 @@ function applyTheme() {
 
 function tickClock() {
   const d = new Date();
-  $('#clock').textContent = d.toLocaleTimeString(getLang() === 'zh' ? 'zh-TW' : 'en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
+  $('#clock').textContent = d.toLocaleTimeString(getLocale(), { hour: '2-digit', minute: '2-digit', hour12: false });
   $('#clock-icon').textContent = isNight() ? '🌙' : '☀️';
   if (themePref === 'auto') applyTheme();
 }
@@ -472,6 +471,29 @@ function updateInset() {
     : { right: closed ? 0 : 372 + 28, top: topH + 18, bottom: 6 });
 }
 
+// language picker: every supported language, named in its own language
+function buildLangMenu() {
+  const m = $('#lang-menu');
+  m.innerHTML = LANGS.map(([code, name]) => `<button type="button" role="option" data-lang="${code}" lang="${code}">${esc(name)}</button>`).join('');
+  m.onclick = async (e) => {
+    const b = e.target.closest('[data-lang]');
+    if (!b) return;
+    await setLang(b.dataset.lang);
+    refreshLangUi();
+    for (const el of cardEls.values()) el._html = '';
+    for (const c of world.critters.values()) c.lastBubble = null;
+    onState(state);
+    applyTheme();
+    tickClock();
+  };
+  refreshLangUi();
+}
+function refreshLangUi() {
+  const code = getLang();
+  $('#btn-lang').textContent = code === 'zh-Hant' ? '繁' : code === 'zh-Hans' ? '简' : code.toUpperCase();
+  for (const b of $('#lang-menu').children) b.classList.toggle('on', b.dataset.lang === code);
+}
+
 function bindUi() {
   $('#btn-panel').onclick = () => {
     app.classList.toggle('panel-closed');
@@ -479,15 +501,14 @@ function bindUi() {
     world.fit();
   };
   $('#panel-grip').onclick = () => $('#btn-panel').onclick();
-  $('#btn-lang').onclick = () => {
-    setLang(getLang() === 'zh' ? 'en' : 'zh');
-    $('#btn-lang').textContent = getLang() === 'zh' ? 'EN' : '中';
-    for (const el of cardEls.values()) el._html = '';
-    for (const c of world.critters.values()) c.lastBubble = null;
-    onState(state);
-    applyTheme();
-    tickClock();
+  $('#btn-lang').onclick = (e) => {
+    e.stopPropagation();
+    const m = $('#lang-menu');
+    m.hidden = !m.hidden;
+    if (!m.hidden) m.querySelector('.on')?.scrollIntoView({ block: 'center' });
   };
+  document.addEventListener('click', () => { $('#lang-menu').hidden = true; });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') $('#lang-menu').hidden = true; });
   $('#btn-theme').onclick = () => {
     themePref = { auto: 'day', day: 'night', night: 'auto' }[themePref];
     store.set('farm.theme', themePref);

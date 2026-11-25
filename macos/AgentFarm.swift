@@ -6,8 +6,33 @@ import ServiceManagement
 import UserNotifications
 import WebKit
 
-let zh = Locale.preferredLanguages.first?.hasPrefix("zh") ?? false
-func L(_ en: String, _ zhText: String) -> String { zh ? zhText : en }
+// Language: the first entry of the system's list that we have a translation for; English if none.
+// The strings live in web/locales/<code>.json (the "native" section), shared with the web page and Electron.
+let supportedLangs = ["en", "zh-Hant", "zh-Hans", "ja", "ko", "fr", "es", "de", "it", "pt", "ru", "uk", "pl", "cs",
+                      "nl", "sv", "da", "nb", "fi", "hu", "ro", "el", "tr", "ar", "he", "hi", "th", "vi", "id", "ms"]
+func matchLang(_ tag: String) -> String? {
+    let parts = tag.replacingOccurrences(of: "_", with: "-").lowercased().split(separator: "-").map(String.init)
+    guard let first = parts.first else { return nil }
+    let alias = ["no": "nb", "nn": "nb", "iw": "he", "in": "id"]
+    let p = alias[first] ?? first
+    if p == "zh" { return parts.contains(where: { ["hant", "tw", "hk", "mo"].contains($0) }) ? "zh-Hant" : "zh-Hans" }
+    return supportedLangs.first { $0.lowercased() == p }
+}
+let langCode: String = Locale.preferredLanguages.lazy.compactMap(matchLang).first ?? "en"
+let nativeStrings: [String: String] = {
+    func load(_ code: String) -> [String: String] {
+        guard let dir = Bundle.main.resourceURL?.appendingPathComponent("app/web/locales/\(code).json"),
+              let data = try? Data(contentsOf: dir),
+              let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else { return [:] }
+        return json["native"] as? [String: String] ?? [:]
+    }
+    return load("en").merging(load(langCode)) { _, new in new }
+}()
+func T(_ key: String, _ vars: [String: Any] = [:]) -> String {
+    var s = nativeStrings[key] ?? key
+    for (k, v) in vars { s = s.replacingOccurrences(of: "{\(k)}", with: "\(v)") }
+    return s
+}
 
 /// WKUserContentController keeps its handlers alive; this breaks the retain cycle.
 final class WeakHandler: NSObject, WKScriptMessageHandler {
@@ -74,12 +99,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSMe
             .volumeIsReadOnly ?? false
         guard path.contains("/AppTranslocation/") || readOnly else { return }
         let a = NSAlert()
-        a.messageText = L("Move Agent Farm to Applications first", "請先把 Agent Farm 拖到「應用程式」")
-        a.informativeText = L(
-            "It is running from the disk image or a temporary location, so the Claude Code hook path it gives you would stop working later. Drag Agent Farm into the Applications folder and open it from there.",
-            "現在是從安裝映像檔或暫存位置執行，說明裡給的 Claude Code 掛鉤路徑之後會失效。請把 Agent Farm 拖進「應用程式」資料夾，再從那裡打開。")
-        a.addButton(withTitle: L("Quit", "結束"))
-        a.addButton(withTitle: L("Open Anyway", "仍然打開"))
+        a.messageText = T("n_move_title")
+        a.informativeText = T("n_move_body")
+        a.addButton(withTitle: T("n_quit"))
+        a.addButton(withTitle: T("n_open_anyway"))
         if a.runModal() == .alertFirstButtonReturn { NSApp.terminate(nil) }
     }
 
@@ -120,19 +143,19 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSMe
                         return
                     }
                 }
-                showError(L("The farm server didn't start in time.", "農場伺服器沒有在時間內啟動。"))
+                showError(T("n_err_timeout"))
                 return
             default:
                 continue
             }
         }
-        showError(L("No free port between 5180 and 5199.", "5180 到 5199 之間沒有可用的連接埠。"))
+        showError(T("n_err_port"))
     }
 
     func launchServer() -> Bool {
         guard let node = Bundle.main.url(forAuxiliaryExecutable: "node"),
               let res = Bundle.main.resourceURL else {
-            showError(L("The app is missing its Node runtime.", "App 裡缺少 Node 執行檔。"))
+            showError(T("n_err_node"))
             return false
         }
         let app = res.appendingPathComponent("app", isDirectory: true)
@@ -171,7 +194,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSMe
         server = nil
         if quitting { return }
         ready = false
-        showError(L("The farm server stopped (exit code \(code)).", "農場伺服器停止了（結束代碼 \(code)）。"))
+        showError(T("n_err_stopped", ["code": code]))
     }
 
     @objc func restartFarm() {
@@ -182,7 +205,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSMe
             quitting = false
             server = nil
         }
-        webView.loadHTMLString(page(L("Starting the farm…", "農場啟動中…")), baseURL: nil)
+        webView.loadHTMLString(page(T("n_starting")), baseURL: nil)
         Task { await startFarm() }
     }
 
@@ -206,7 +229,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSMe
         window.tabbingMode = .disallowed
         window.center()
         window.setFrameAutosaveName("AgentFarmWindow")
-        webView.loadHTMLString(page(L("Starting the farm…", "農場啟動中…")), baseURL: nil)
+        webView.loadHTMLString(page(T("n_starting")), baseURL: nil)
         window.makeKeyAndOrderFront(nil)
         NSApp.activate(ignoringOtherApps: true)
     }
@@ -236,8 +259,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSMe
     func showError(_ msg: String) {
         ready = false
         let log = logURL.path.replacingOccurrences(of: NSHomeDirectory(), with: "~")
-        webView.loadHTMLString(page(msg, detail: L("Log: \(log)", "紀錄檔：\(log)"),
-                                    button: L("Restart the farm", "重新啟動農場")), baseURL: nil)
+        webView.loadHTMLString(page(msg, detail: T("n_log", ["path": log]),
+                                    button: T("n_restart")), baseURL: nil)
         showFarm()
     }
 
@@ -341,14 +364,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSMe
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         let m = NSMenu()
         m.delegate = self
-        m.addItem(withTitle: L("Open Farm", "打開農場"), action: #selector(showFarm), keyEquivalent: "")
-        m.addItem(withTitle: L("Open in Browser", "在瀏覽器打開"), action: #selector(openInBrowser), keyEquivalent: "")
+        m.addItem(withTitle: T("n_open_farm"), action: #selector(showFarm), keyEquivalent: "")
+        m.addItem(withTitle: T("n_open_browser"), action: #selector(openInBrowser), keyEquivalent: "")
         m.addItem(.separator())
         countItem = m.addItem(withTitle: "", action: nil, keyEquivalent: "")
         countItem.isEnabled = false
         m.addItem(.separator())
-        loginItem = m.addItem(withTitle: L("Open at Login", "登入時自動開啟"), action: #selector(toggleLogin), keyEquivalent: "")
-        m.addItem(withTitle: L("Quit Agent Farm", "結束 Agent Farm"), action: #selector(NSApplication.terminate(_:)), keyEquivalent: "")
+        loginItem = m.addItem(withTitle: T("n_login"), action: #selector(toggleLogin), keyEquivalent: "")
+        m.addItem(withTitle: T("n_quit_app"), action: #selector(NSApplication.terminate(_:)), keyEquivalent: "")
         for i in m.items where i.action != #selector(NSApplication.terminate(_:)) { i.target = self }
         statusItem.menu = m
         updateStatusItem()
@@ -367,7 +390,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSMe
             b.title = waiting > 0 ? " \(waiting)" : ""
             b.toolTip = countItem.title
         }
-        countItem.title = L("\(working) working · \(waiting) waiting for you", "\(working) 個工作中 · \(waiting) 個等你回覆")
+        countItem.title = T("n_status", ["working": working, "waiting": waiting])
         NSApp.dockTile.badgeLabel = waiting > 0 ? String(waiting) : nil
     }
 
@@ -400,35 +423,35 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSMe
             return i
         }
         _ = sub("Agent Farm", [
-            it(L("About Agent Farm", "關於 Agent Farm"), #selector(about), target: self),
+            it(T("n_about"), #selector(about), target: self),
             .separator(),
-            it(L("Hide Agent Farm", "隱藏 Agent Farm"), #selector(NSApplication.hide(_:)), "h"),
-            it(L("Hide Others", "隱藏其他"), #selector(NSApplication.hideOtherApplications(_:)), "h", [.command, .option]),
-            it(L("Show All", "顯示全部"), #selector(NSApplication.unhideAllApplications(_:))),
+            it(T("n_hide"), #selector(NSApplication.hide(_:)), "h"),
+            it(T("n_hide_others"), #selector(NSApplication.hideOtherApplications(_:)), "h", [.command, .option]),
+            it(T("n_show_all"), #selector(NSApplication.unhideAllApplications(_:))),
             .separator(),
-            it(L("Quit Agent Farm", "結束 Agent Farm"), #selector(NSApplication.terminate(_:)), "q"),
+            it(T("n_quit_app"), #selector(NSApplication.terminate(_:)), "q"),
         ])
-        _ = sub(L("Edit", "編輯"), [
-            it(L("Undo", "還原"), Selector(("undo:")), "z"),
-            it(L("Redo", "重做"), Selector(("redo:")), "z", [.command, .shift]),
+        _ = sub(T("n_edit"), [
+            it(T("n_undo"), Selector(("undo:")), "z"),
+            it(T("n_redo"), Selector(("redo:")), "z", [.command, .shift]),
             .separator(),
-            it(L("Cut", "剪下"), #selector(NSText.cut(_:)), "x"),
-            it(L("Copy", "拷貝"), #selector(NSText.copy(_:)), "c"),
-            it(L("Paste", "貼上"), #selector(NSText.paste(_:)), "v"),
-            it(L("Select All", "全選"), #selector(NSText.selectAll(_:)), "a"),
+            it(T("n_cut"), #selector(NSText.cut(_:)), "x"),
+            it(T("n_copy"), #selector(NSText.copy(_:)), "c"),
+            it(T("n_paste"), #selector(NSText.paste(_:)), "v"),
+            it(T("n_select_all"), #selector(NSText.selectAll(_:)), "a"),
         ])
-        _ = sub(L("View", "顯示方式"), [
-            it(L("Reload", "重新載入"), #selector(reloadFarm), "r", target: self),
-            it(L("Open in Browser", "在瀏覽器打開"), #selector(openInBrowser), "o", [.command, .shift], target: self),
+        _ = sub(T("n_view"), [
+            it(T("n_reload"), #selector(reloadFarm), "r", target: self),
+            it(T("n_open_browser"), #selector(openInBrowser), "o", [.command, .shift], target: self),
             .separator(),
-            it(L("Enter Full Screen", "進入全螢幕"), #selector(NSWindow.toggleFullScreen(_:)), "f", [.command, .control]),
+            it(T("n_fullscreen"), #selector(NSWindow.toggleFullScreen(_:)), "f", [.command, .control]),
         ])
-        let win = sub(L("Window", "視窗"), [
-            it(L("Minimize", "縮到最小"), #selector(NSWindow.performMiniaturize(_:)), "m"),
-            it(L("Zoom", "縮放"), #selector(NSWindow.performZoom(_:))),
-            it(L("Close", "關閉"), #selector(NSWindow.performClose(_:)), "w"),
+        let win = sub(T("n_window"), [
+            it(T("n_minimize"), #selector(NSWindow.performMiniaturize(_:)), "m"),
+            it(T("n_zoom"), #selector(NSWindow.performZoom(_:))),
+            it(T("n_close"), #selector(NSWindow.performClose(_:)), "w"),
             .separator(),
-            it(L("Agent Farm", "Agent Farm"), #selector(showFarm), "0", target: self),
+            it("Agent Farm", #selector(showFarm), "0", target: self),
         ])
         NSApp.mainMenu = main
         NSApp.windowsMenu = win

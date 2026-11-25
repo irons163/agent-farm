@@ -99,7 +99,7 @@ cat >"$APP/Contents/Info.plist" <<PLIST
   <key>CFBundleShortVersionString</key><string>$VERSION</string>
   <key>CFBundleVersion</key><string>$VERSION</string>
   <key>CFBundleDevelopmentRegion</key><string>en</string>
-  <key>CFBundleLocalizations</key><array><string>en</string><string>zh-Hant</string></array>
+  <key>CFBundleLocalizations</key><array><string>en</string><string>zh-Hant</string><string>zh-Hans</string><string>ja</string><string>ko</string><string>fr</string><string>es</string><string>de</string><string>it</string><string>pt</string><string>ru</string><string>uk</string><string>pl</string><string>cs</string><string>nl</string><string>sv</string><string>da</string><string>nb</string><string>fi</string><string>hu</string><string>ro</string><string>el</string><string>tr</string><string>ar</string><string>he</string><string>hi</string><string>th</string><string>vi</string><string>id</string><string>ms</string></array>
   <key>LSMinimumSystemVersion</key><string>$MINOS</string>
   <key>LSApplicationCategoryType</key><string>public.app-category.developer-tools</string>
   <key>NSHighResolutionCapable</key><true/>
